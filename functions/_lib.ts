@@ -32,7 +32,7 @@ export async function safeEqual(a: string, b: string) {
 
 export async function isAdmin(request: Request, env: Env) {
   const token = env.ADMIN_TOKEN
-  if (!token || token.length < 16) return false
+  if (!token || token.length < 8) return false
   const header = request.headers.get('Authorization') ?? ''
   const given = header.startsWith('Bearer ') ? header.slice(7).trim() : ''
   if (!given) return false
