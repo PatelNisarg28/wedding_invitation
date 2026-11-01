@@ -1,0 +1,11 @@
+# Cloudflare Pages project configuration
+name = "nisarg-weds-devanshi"
+pages_build_output_dir = "./dist"
+compatibility_date = "2026-10-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "nwd-rsvp"
+# Replace with the id printed by `npx wrangler d1 create nwd-rsvp`
+database_id = "00000000-0000-0000-0000-000000000000"
+migrations_dir = "migrations"
