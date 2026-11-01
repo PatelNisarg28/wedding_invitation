@@ -7,5 +7,5 @@ compatibility_date = "2026-10-01"
 binding = "DB"
 database_name = "nwd-rsvp"
 # Replace with the id printed by `npx wrangler d1 create nwd-rsvp`
-database_id = "00000000-0000-0000-0000-000000000000"
+database_id = "7516ce39-ef1e-447f-b91b-97ee248b681b"
 migrations_dir = "migrations"
