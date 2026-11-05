@@ -59,8 +59,8 @@ export const venues: Record<VenueId, Venue> = {
   samajWadi: {
     id: 'samajWadi',
     name: {
-      en: '52/22 Kadva Patidar Community Hall',
-      hi: '52/22 कड़वा पाटीदार समाज भवन',
+      en: '52/22 Kadva Patidar Community Ground',
+      hi: '52/22 कड़वा पाटीदार समाज मैदान',
     },
     address: {
       en: 'Behind Umiya Mata Temple, Bamroli, Surat, Gujarat',
