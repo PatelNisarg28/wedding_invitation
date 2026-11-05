@@ -2320,3 +2320,155 @@ html[data-lang='hi'] footer.site-footer {
     display: none;
   }
 }
+
+/* ---------- RSVP: ready-made notes ---------- */
+.quick-notes {
+  margin-bottom: 10px;
+}
+.quick-title {
+  display: block;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.quick-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  margin-inline: -4px;
+  padding: 3px 28px 3px 4px;
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
+  mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
+}
+.quick-row::-webkit-scrollbar {
+  display: none;
+}
+.quick-note {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  flex: none;
+  width: min(232px, 72vw);
+  scroll-snap-align: start;
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px rgba(184, 137, 62, 0.55);
+  font-size: 15px;
+  line-height: 1.35;
+  text-align: left;
+  color: var(--charcoal);
+  transition: background 0.25s var(--ease), box-shadow 0.25s var(--ease), color 0.25s var(--ease);
+}
+.quick-note:hover {
+  background: rgba(239, 224, 198, 0.45);
+}
+.quick-note[aria-pressed='true'] {
+  background: rgba(176, 36, 71, 0.08);
+  box-shadow: inset 0 0 0 1.5px var(--maroon);
+  color: var(--maroon);
+}
+
+/* ---------- RSVP: a personal note from Nisarg ---------- */
+.friend-note {
+  position: relative;
+  margin-top: 22px;
+  padding: 22px 18px 18px;
+  border-radius: 16px;
+  text-align: center;
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(239, 224, 198, 0.7), transparent 70%),
+    var(--white);
+  box-shadow: inset 0 0 0 1px rgba(184, 137, 62, 0.7), inset 0 0 0 5px rgba(184, 137, 62, 0.1);
+}
+.friend-note.think {
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(176, 36, 71, 0.1), transparent 70%),
+    var(--white);
+  box-shadow: inset 0 0 0 1.5px var(--maroon), inset 0 0 0 5px rgba(122, 30, 44, 0.08);
+}
+.friend-seal {
+  width: 38px;
+  height: 38px;
+  margin: 0 auto 6px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at 35% 30%, #b0465a, var(--maroon) 55%, #4a0e19);
+  color: #f3d9a0;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 20px;
+  box-shadow: inset 0 0 0 2px rgba(217, 185, 122, 0.5), 0 4px 10px -4px rgba(60, 10, 20, 0.5);
+}
+.friend-from {
+  font-size: 12.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+}
+html[data-lang='hi'] .friend-from {
+  letter-spacing: 0.02em;
+  font-size: 15px;
+  text-transform: none;
+}
+.friend-hello {
+  margin: 8px 0 4px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.2;
+  color: var(--maroon);
+}
+html[data-lang='hi'] .friend-hello {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 21px;
+  line-height: 1.45;
+}
+.friend-body {
+  margin: 0 auto;
+  max-width: 400px;
+  font-size: 16.5px;
+  line-height: 1.5;
+  color: var(--charcoal);
+}
+.friend-sign {
+  margin-top: 8px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 19px;
+  color: var(--gold-deep);
+}
+.friend-come {
+  margin-top: 14px;
+}
+.friend-confirm {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-top: 14px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(239, 224, 198, 0.4);
+  text-align: left;
+  font-size: 14.5px;
+  line-height: 1.4;
+  color: var(--charcoal);
+  cursor: pointer;
+}
+.friend-confirm input {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin: 1px 0 0;
+  accent-color: var(--maroon);
+}
+.friend-note .error {
+  justify-content: center;
+}
