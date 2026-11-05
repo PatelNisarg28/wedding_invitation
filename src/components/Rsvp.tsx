@@ -429,8 +429,7 @@ export function Rsvp() {
                           {t.rsvp.family}
                         </p>
                       </div>
-                      <div className="field" style={{ marginTop: 26 }}>
-                        <span className="field-label">{t.rsvp.stayTitle}</span>
+                      <div className="field" style={{ marginTop: 18 }}>
                         <label className="stay-check">
                           <input type="checkbox" checked={needsStay} onChange={(e) => setNeedsStay(e.target.checked)} />
                           <span>
