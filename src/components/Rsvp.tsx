@@ -310,7 +310,58 @@ export function Rsvp() {
                       <IconAlert /> {t.rsvp.errors[errors.attending]}
                     </p>
                   )}
+                  <AnimatePresence mode="wait" initial={false}>
+                    {attending && (
+                      <m.p
+                        key={attending}
+                        className="choice-line"
+                        aria-live="polite"
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -4 }}
+                        transition={{ duration: 0.35, ease: EASE }}
+                      >
+                        {attending === 'yes' ? t.rsvp.acceptLine : t.rsvp.declineLine}
+                      </m.p>
+                    )}
+                  </AnimatePresence>
                 </div>
+
+                {/* everyone else gets the couple's note for their answer (must-come friends get Nisarg's own, below) */}
+                <AnimatePresence mode="wait" initial={false}>
+                  {!friend && attending && (
+                    <m.div
+                      key={`note-${attending}`}
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.45, ease: EASE }}
+                      style={{ overflow: 'hidden' }}
+                    >
+                      <div className="friend-note couple-note" role="note">
+                        <div className={`friend-seal ${attending === 'no' ? 'pair' : ''}`} aria-hidden="true">
+                          {attending === 'yes' ? (
+                            'N'
+                          ) : (
+                            <>
+                              N<span>&amp;</span>D
+                            </>
+                          )}
+                        </div>
+                        <div className="friend-from">{attending === 'yes' ? t.rsvp.note.acceptFrom : t.rsvp.note.declineFrom}</div>
+                        {(attending === 'yes' ? t.rsvp.note.acceptBody : t.rsvp.note.declineBody).map((para) => (
+                          <p key={para} className="friend-body">
+                            {para}
+                          </p>
+                        ))}
+                        <div className="note-sign">
+                          <span>{t.rsvp.note.withLove}</span>
+                          {t.rsvp.note.names}
+                        </div>
+                      </div>
+                    </m.div>
+                  )}
+                </AnimatePresence>
 
                 <AnimatePresence initial={false}>
                   {friend && (
@@ -385,8 +436,11 @@ export function Rsvp() {
                         <span className="field-label" id="guests-label">
                           {t.rsvp.guests}
                         </span>
+                        <p className="field-help" id="guests-help">
+                          {t.rsvp.guestsHelp}
+                        </p>
                         <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 6 }}>
-                          <div className="stepper" role="group" aria-labelledby="guests-label">
+                          <div className="stepper" role="group" aria-labelledby="guests-label" aria-describedby="guests-help">
                             <button type="button" onClick={() => setGuests((g) => Math.max(1, g - 1))} disabled={guests <= 1} aria-label={t.rsvp.fewer}>
                               −
                             </button>
@@ -395,8 +449,15 @@ export function Rsvp() {
                               +
                             </button>
                           </div>
-                          <span className="help">{t.rsvp.guestsHelp}</span>
                         </div>
+                        {errors.guests && (
+                          <p className="error">
+                            <IconAlert /> {t.rsvp.errors[errors.guests]}
+                          </p>
+                        )}
+                      </div>
+                      <div className="field" style={{ marginTop: 26 }}>
+                        <span className="field-label">{t.rsvp.stayTitle}</span>
                         <label className="stay-check">
                           <input type="checkbox" checked={needsStay} onChange={(e) => setNeedsStay(e.target.checked)} />
                           <span>
@@ -404,11 +465,6 @@ export function Rsvp() {
                             <small>{t.rsvp.stayHelp}</small>
                           </span>
                         </label>
-                        {errors.guests && (
-                          <p className="error">
-                            <IconAlert /> {t.rsvp.errors[errors.guests]}
-                          </p>
-                        )}
                       </div>
                     </m.div>
                   )}
@@ -419,6 +475,7 @@ export function Rsvp() {
                     {t.rsvp.message}
                     <span className="opt">({t.rsvp.optional})</span>
                   </label>
+                  <p className="field-help">{t.rsvp.messageHelp}</p>
                   <div className="quick-notes" role="group" aria-label={t.rsvp.quickTitle}>
                     <span className="quick-title">{t.rsvp.quickTitle}</span>
                     <div className="quick-row">
