@@ -30,7 +30,7 @@ const en = {
     sonOf: (p: string) => `Son of ${p}`,
     daughterOf: (p: string) => `Daughter of ${p}`,
     weds: 'weds',
-    muhurat: 'Tuesday, Posh Vad 4, Samvat 2083',
+    muhurat: 'Tuesday, 26th January 2027',
   },
   countdown: {
     eyebrow: 'Counting down',
@@ -117,7 +117,7 @@ const en = {
     help: 'For any help, please call',
   },
   footer: {
-    made: 'Made with love for our family and friends',
+    made: 'Two souls, one heart — a lifetime of love begins.',
   },
 }
 
@@ -153,7 +153,7 @@ const hi: Dict = {
     sonOf: (p: string) => `${p} के सुपुत्र`,
     daughterOf: (p: string) => `${p} की सुपुत्री`,
     weds: 'संग',
-    muhurat: 'मंगलवार, पौष वद 4, विक्रम संवत 2083',
+    muhurat: 'मंगलवार, 26 जनवरी 2027',
   },
   countdown: {
     eyebrow: 'शुभ घड़ी की प्रतीक्षा',
@@ -240,7 +240,7 @@ const hi: Dict = {
     help: 'किसी भी सहायता के लिए संपर्क करें',
   },
   footer: {
-    made: 'अपने परिवार और मित्रों के लिए प्रेम सहित',
+    made: 'दो आत्माएँ, एक हृदय — जीवन भर के प्रेम की शुरुआत।',
   },
 }
 

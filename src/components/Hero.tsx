@@ -2,7 +2,7 @@ import { m, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 import { city, couple, events, venues, WEDDING_START } from '../content/wedding'
 import { useLang } from '../i18n/LanguageContext'
 import { IconArrow, IconPin, Mandala } from './Ornaments'
-import { Bell, Bougainvillea, Diya, ElephantEmblem, FloorPetals, Kalash, Pillar, TitleOrnament, Urli } from './Scenery'
+import { Bell, Bougainvillea, Diya, ElephantEmblem, FloorPetals, Pillar, TitleOrnament, Urli } from './Scenery'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
@@ -65,7 +65,7 @@ export function Hero({ ready }: { ready: boolean }) {
 
       <m.div className="hero-content" style={{ y: contentY, opacity: fade }}>
         <m.div {...item(0)}>
-          <ElephantEmblem className="hero-emblem" />
+          <ElephantEmblem />
         </m.div>
         <m.div className="hero-kicker" {...item(1)}>
           <span aria-hidden="true" />
@@ -102,7 +102,8 @@ export function Hero({ ready }: { ready: boolean }) {
       </m.div>
 
       <m.div className="hero-ground left" {...grow(3, 'bottom')}>
-        <Kalash className="kalash" />
+        <Diya className="diya" />
+        <Urli className="urli" />
         <FloorPetals className="floor-petals" />
       </m.div>
       <m.div className="hero-ground right" {...grow(3, 'bottom')}>
@@ -110,10 +111,6 @@ export function Hero({ ready }: { ready: boolean }) {
         <Diya className="diya" />
         <FloorPetals className="floor-petals" />
       </m.div>
-
-      <a href="#invitation" className="scroll-cue" aria-label={t.hero.scroll}>
-        <i aria-hidden="true" />
-      </a>
     </section>
   )
 }

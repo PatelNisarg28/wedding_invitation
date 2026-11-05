@@ -1,10 +1,10 @@
 /**
  * Hand-drawn scenery for the royal maroon theme: hanging bougainvillea, temple bells,
- * carved pillars, the elephant-and-chhatri emblem, brass urli, kalash and a lit diya.
+ * carved pillars, the elephant-and-chhatri emblem, brass urlis and lit diyas.
  * Everything is inline SVG (no image downloads) and every movement is a CSS animation
  * on transform/opacity only, switched off for reduced-motion users (see global.css).
  */
-import { memo, type CSSProperties, type SVGProps } from 'react'
+import { memo, useEffect, useState, type CSSProperties, type SVGProps } from 'react'
 
 type P = SVGProps<SVGSVGElement>
 type Pt = [number, number]
@@ -183,50 +183,33 @@ export function Pillar(props: P) {
 }
 
 /* ---------- elephants under a royal chhatri ---------- */
-const ELEPHANT =
-  'M6 27 C6 17 14 11 26 11 C34 11 40 12 44 14 C47 9 54 9 57 14 C59 18 58 23 56 26 C55 30 56 34 59 36 C61 37 60 40 57 39 C54 38 52 34 52 30 L51 30 L50 43 L45 43 L45 33 C38 34 29 34 23 33 L22 43 L17 43 L16 32 C12 31 9 32 8 34 C7 32 6 30 6 27Z'
+const ELEPHANT_SRC = `${import.meta.env.BASE_URL}elephant.webp`
 
-function Elephant({ x, flip }: { x: number; flip?: boolean }) {
+/** The family's painted elephant, twice, greeting each other under a royal chhatri. */
+export function ElephantEmblem() {
   return (
-    <g transform={`translate(${x} 34)${flip ? ' translate(62 0) scale(-1 1)' : ''}`}>
-      <g className="elephant-bob">
-        <path d={ELEPHANT} fill="#7a1e2c" />
-        <path d="M44 16 C40 17 39 25 44 28 C47 27 48 21 46 17Z" fill="#5a1220" />
-        {/* saddle cloth with gold border and tassels */}
-        <path d="M20 12 C26 11 34 11 38 13 L37 25 C31 27 25 27 21 25Z" fill="#c9a24f" />
-        <path d="M22 14 C27 13 33 13 36 15 L35.5 23 C30.5 24.5 25.5 24.5 23 23Z" fill="#a8263a" />
-        <path d="M21 25 l1 3 M25 26.5 l0.5 3 M29 27 v3 M33 26.5 l-0.5 3 M37 25 l-1 3" stroke="#c9a24f" strokeWidth="1" />
-        {/* head ornament, eye and tusk */}
-        <path d="M49 11 C51 13 53 13 55 11 L52 17Z" fill="#c9a24f" />
-        <circle cx="53" cy="17" r="0.9" fill="#f6ead2" />
-        <path d="M54 29 C56 31.5 58.5 31.5 60 30" stroke="#f6ead2" strokeWidth="1.4" strokeLinecap="round" />
-        <path d="M45 41 H50 M17 41 H22" stroke="#c9a24f" strokeWidth="1.2" />
-      </g>
-    </g>
-  )
-}
-
-export function ElephantEmblem(props: P) {
-  return (
-    <svg viewBox="0 0 200 82" fill="none" aria-hidden="true" {...props}>
-      <Elephant x={10} />
-      <Elephant x={128} flip />
-      {/* chhatri */}
-      <g className="chhatri">
-        <path d="M100 4 V76" stroke="#8e6a2e" strokeWidth="1.6" />
-        <circle cx="100" cy="4" r="2.4" fill="#c9a24f" />
-        <path d="M72 26 C76 12 124 12 128 26Z" fill="#a8263a" stroke="#8e6a2e" strokeWidth="1" />
-        <path d="M80 22 C86 14 114 14 120 22" stroke="#c9a24f" strokeWidth="1" />
-        <g className="chhatri-fringe">
-          <path d="M72 26 q3.5 5 7 0 q3.5 5 7 0 q3.5 5 7 0 q3.5 5 7 0 q3.5 5 7 0 q3.5 5 7 0 q3.5 5 8 0" stroke="#c9a24f" strokeWidth="1.2" fill="#c9a24f" fillOpacity="0.25" />
-          {[75.5, 89.5, 103.5, 117.5].map((x) => (
-            <circle key={x} cx={x} cy={33} r="1.3" fill="#c9a24f" />
-          ))}
+    <div className="hero-emblem" aria-hidden="true">
+      <img className="emblem-elephant" src={ELEPHANT_SRC} alt="" width={480} height={337} decoding="async" />
+      <svg className="emblem-chhatri" viewBox="0 0 70 104" fill="none">
+        <g className="chhatri">
+          <path d="M35 6 V102" stroke="#8e6a2e" strokeWidth="2.2" />
+          <circle cx="35" cy="5" r="3.4" fill="#c9a24f" />
+          <path d="M3 34 C7 14 63 14 67 34Z" fill="#a8263a" stroke="#8e6a2e" strokeWidth="1.2" />
+          <path d="M11 29 C17 19 53 19 59 29" stroke="#c9a24f" strokeWidth="1.2" />
+          <g className="chhatri-fringe">
+            <path d="M3 34 q4 6 8 0 q4 6 8 0 q4 6 8 0 q4 6 8 0 q4 6 8 0 q4 6 8 0 q4 6 8 0 q4 6 8 0" stroke="#c9a24f" strokeWidth="1.4" fill="#c9a24f" fillOpacity="0.3" />
+            {[7, 23, 47, 63].map((x) => (
+              <g key={x}>
+                <path d={`M${x} 38 v5`} stroke="#c9a24f" strokeWidth="0.8" />
+                <circle cx={x} cy={44.5} r="1.7" fill="#c9a24f" />
+              </g>
+            ))}
+          </g>
+          <path d="M25 102 H45 L40.5 95 H29.5Z" fill="#c9a24f" />
         </g>
-        <path d="M92 76 H108 L104 70 H96Z" fill="#c9a24f" />
-      </g>
-      <path d="M8 79 H192" stroke="#c9a24f" strokeWidth="0.8" opacity="0.6" />
-    </svg>
+      </svg>
+      <img className="emblem-elephant flip" src={ELEPHANT_SRC} alt="" width={480} height={337} decoding="async" />
+    </div>
   )
 }
 
@@ -301,30 +284,6 @@ export function Urli(props: P) {
   )
 }
 
-/** Kalash with mango leaves and coconut. */
-export function Kalash(props: P) {
-  const leaves = [-62, -36, -12, 12, 36, 62]
-  return (
-    <svg viewBox="0 0 100 130" fill="none" aria-hidden="true" overflow="visible" {...props}>
-      <defs>{BRASS}</defs>
-      {leaves.map((a, i) => (
-        <g key={a} transform={`translate(50 46) rotate(${a})`}>
-          <g className="flutter" style={{ animationDelay: `${-i * 0.6}s` }}>
-            <path d={leafD(34, 9)} fill={i % 2 ? '#5c7a36' : '#6f8f45'} />
-          </g>
-        </g>
-      ))}
-      <ellipse cx="50" cy="30" rx="13" ry="16" fill="#8a5a2b" />
-      <path d="M41 22 C45 18 55 18 59 22" stroke="#5e3c1a" strokeWidth="1" />
-      <path d="M36 44 H64 L62 52 H38Z" fill="url(#brass)" />
-      <path d="M38 52 C14 60 14 112 34 122 H66 C86 112 86 60 62 52Z" fill="url(#brass)" />
-      <path d="M24 82 C40 90 60 90 76 82" stroke="#a8263a" strokeWidth="3" />
-      <path d="M24 82 C40 90 60 90 76 82" stroke="#f0c75e" strokeWidth="0.8" strokeDasharray="2 3" />
-      <path d="M34 122 H66 L64 128 H36Z" fill="#7d5a1f" />
-    </svg>
-  )
-}
-
 /** A scatter of rose petals for the floor line. */
 export function FloorPetals(props: P) {
   const pts = Array.from({ length: 14 }, (_, i) => ({ x: 6 + r01(i + 40) * 188, y: 8 + r01(i + 80) * 12, a: r01(i + 120) * 180, c: i % 3 }))
@@ -349,41 +308,118 @@ export function TitleOrnament(props: P) {
   )
 }
 
-/* ---------- falling petals and leaves (whole page) ---------- */
-const FALLERS = Array.from({ length: 16 }, (_, i) => ({
-  left: `${f(3 + r01(i + 1) * 94)}%`,
-  delay: `${f(-r01(i + 7) * 22)}s`,
-  dur: `${f(15 + r01(i + 13) * 12)}s`,
-  sway: `${f(2.6 + r01(i + 19) * 2.4)}s`,
-  drift: `${Math.round(20 + r01(i + 23) * 40)}px`,
-  size: Math.round(11 + r01(i + 29) * 9),
-  kind: i % 4 === 3 ? 'leaf' : 'petal',
-  tone: i % 3,
-}))
+/* ---------- falling petals and leaves ---------- */
+type Faller = {
+  id: number
+  x: number
+  y: number
+  fall: number
+  delay: number
+  dur: number
+  sway: number
+  drift: number
+  size: number
+  leaf: boolean
+  tone: number
+}
 
-export const FallingPetals = memo(function FallingPetals() {
+let nextId = 0
+const rand = (a: number, b: number) => a + Math.random() * (b - a)
+
+/** A welcome shower across the top of the screen: all of it starts within ~3s and is gone by ~9s. */
+function shower(): Faller[] {
+  const w = window.innerWidth
+  const h = window.innerHeight
+  const n = w < 600 ? 12 : 18
+  return Array.from({ length: n }, (_, i) => ({
+    id: nextId++,
+    x: rand(0.03, 0.97) * w,
+    y: -30,
+    fall: h + 60,
+    delay: rand(0, 3),
+    dur: rand(4.5, 6),
+    sway: rand(2.2, 3.6),
+    drift: rand(18, 45),
+    size: Math.round(rand(11, 19)),
+    leaf: i % 4 === 3,
+    tone: i % 3,
+  }))
+}
+
+/** A small handful that tumbles down from wherever the guest touched. */
+function burst(cx: number, cy: number): Faller[] {
+  const h = window.innerHeight
+  return Array.from({ length: 7 }, (_, i) => {
+    const y = cy + rand(-24, 12)
+    return {
+      id: nextId++,
+      x: cx + rand(-40, 40),
+      y,
+      fall: h - y + 40,
+      delay: rand(0, 0.35),
+      dur: rand(2.6, 3.8),
+      sway: rand(1.6, 2.6),
+      drift: rand(14, 34),
+      size: Math.round(rand(11, 17)),
+      leaf: i % 4 === 3,
+      tone: i % 3,
+    }
+  })
+}
+
+const MAX_FALLERS = 48
+
+/**
+ * Petals and leaves: one gentle shower when the invitation opens, then quiet.
+ * After that, every tap or click on the page lets a few petals fall from that spot.
+ */
+export function FallingPetals() {
+  const [items, setItems] = useState<Faller[]>([])
+
+  useEffect(() => {
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return
+    const timers = new Set<number>()
+    const add = (batch: Faller[]) => {
+      setItems((cur) => [...cur, ...batch].slice(-MAX_FALLERS))
+      const life = Math.max(...batch.map((p) => p.delay + p.dur)) * 1000 + 200
+      const ids = new Set(batch.map((p) => p.id))
+      const t = window.setTimeout(() => {
+        timers.delete(t)
+        setItems((cur) => cur.filter((p) => !ids.has(p.id)))
+      }, life)
+      timers.add(t)
+    }
+    add(shower())
+    const onDown = (e: PointerEvent) => add(burst(e.clientX, e.clientY))
+    window.addEventListener('pointerdown', onDown, { passive: true })
+    return () => {
+      window.removeEventListener('pointerdown', onDown)
+      timers.forEach((t) => window.clearTimeout(t))
+    }
+  }, [])
+
   return (
     <div className="fallers" aria-hidden="true">
-      {FALLERS.map((p, i) => (
-        <span key={i} className="faller" style={{ left: p.left, animationDelay: p.delay, animationDuration: p.dur }}>
+      {items.map((p) => (
+        <span
+          key={p.id}
+          className="faller"
+          style={{ left: p.x, top: p.y, animationDelay: `${p.delay}s`, animationDuration: `${p.dur}s`, ['--fall' as string]: `${p.fall}px` } as CSSProperties}
+        >
           <svg
             className="faller-sway"
             viewBox="-8 -16 16 18"
             width={p.size}
             height={p.size}
-            style={{ animationDuration: p.sway, ['--drift' as string]: p.drift } as CSSProperties}
+            style={{ animationDuration: `${p.sway}s`, ['--drift' as string]: `${p.drift}px` } as CSSProperties}
           >
-            {p.kind === 'leaf' ? (
-              <path d={leafD(15, 5.5)} fill={['#6f8f45', '#5c7a36', '#8aa65a'][p.tone]} />
-            ) : (
-              <path d={BRACT} fill={BLOOM[p.tone][0]} opacity="0.9" />
-            )}
+            {p.leaf ? <path d={leafD(15, 5.5)} fill={['#6f8f45', '#5c7a36', '#8aa65a'][p.tone]} /> : <path d={BRACT} fill={BLOOM[p.tone][0]} opacity="0.9" />}
           </svg>
         </span>
       ))}
     </div>
   )
-})
+}
 
 /** Soft, blurred shadow of a leafy branch drifting in the breeze (decorative backdrop). */
 export function LeafShadow({ style, className = '' }: { style?: CSSProperties; className?: string }) {

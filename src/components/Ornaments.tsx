@@ -1,5 +1,4 @@
 import type { SVGProps } from 'react'
-import type { EventIcon } from '../content/wedding'
 
 type P = SVGProps<SVGSVGElement>
 
@@ -147,81 +146,6 @@ export const FLOURISH_PATHS = [
   'M210 40 C180 40 160 22 130 22 C116 22 110 30 110 36',
   'M60 40 C80 52 100 52 110 46 C120 52 140 52 160 40',
 ]
-
-/* ---------- event icons (line art) ---------- */
-export function EventGlyph({ name, ...props }: P & { name: EventIcon }) {
-  const common = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.3, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const }
-  return (
-    <svg viewBox="0 0 48 48" aria-hidden="true" {...props}>
-      <g {...common}>
-        {name === 'dinner' && (
-          <>
-            <path d="M8 31 C8 20 15 13 24 13 C33 13 40 20 40 31" />
-            <path d="M5 31 H43" />
-            <path d="M10 36 H38" />
-            <circle cx="24" cy="10.5" r="2.2" />
-            <path d="M15 24 C16 20 19 18 22 17.5" opacity="0.6" />
-            <path d="M30 6 c1 1.5 -1 3 0 4.5 M34 7 c1 1.5 -1 3 0 4.5" opacity="0.55" />
-          </>
-        )}
-        {name === 'garba' && (
-          <>
-            <g transform="rotate(38 24 24)">
-              <rect x="22.4" y="5" width="3.2" height="38" rx="1.6" />
-              <path d="M22.4 11 H25.6 M22.4 14 H25.6 M22.4 34 H25.6 M22.4 37 H25.6" />
-            </g>
-            <g transform="rotate(-38 24 24)">
-              <rect x="22.4" y="5" width="3.2" height="38" rx="1.6" />
-              <path d="M22.4 11 H25.6 M22.4 14 H25.6 M22.4 34 H25.6 M22.4 37 H25.6" />
-            </g>
-            <circle cx="24" cy="24" r="2" fill="currentColor" stroke="none" />
-            <circle cx="9" cy="24" r="1" fill="currentColor" stroke="none" />
-            <circle cx="39" cy="24" r="1" fill="currentColor" stroke="none" />
-          </>
-        )}
-        {name === 'haldi' && (
-          <>
-            <path d="M13 23 C15 15.5 33 15.5 35 23" fill="currentColor" fillOpacity="0.14" />
-            <path d="M7 23 H41 C40 32 33 38 24 38 C15 38 8 32 7 23Z" />
-            <path d="M11 28 H37" opacity="0.6" />
-            <path d="M18 38 H30 L31.5 42 H16.5Z" />
-            <path d="M33 14 C36 9 41 8 44 9 C43 13 38 16 33 14Z" fill="currentColor" fillOpacity="0.12" />
-            <circle cx="21" cy="19.5" r="0.9" fill="currentColor" stroke="none" />
-            <circle cx="26" cy="18.5" r="0.9" fill="currentColor" stroke="none" />
-          </>
-        )}
-        {name === 'baraat' && (
-          <>
-            <path d="M7 21 C9 11 39 11 41 21" fill="currentColor" fillOpacity="0.1" />
-            <path d="M7 21 q4.25 4 8.5 0 q4.25 4 8.5 0 q4.25 4 8.5 0 q4.25 4 8.5 0" />
-            <path d="M24 13 V44" />
-            <path d="M24 6 C26 8 26 10 24 12 C22 10 22 8 24 6Z" fill="currentColor" fillOpacity="0.2" />
-            <path d="M7 21 V27 M15.5 21 V25 M32.5 21 V25 M41 21 V27" opacity="0.8" />
-            <circle cx="7" cy="28.5" r="1.4" />
-            <circle cx="15.5" cy="26.5" r="1.2" />
-            <circle cx="32.5" cy="26.5" r="1.2" />
-            <circle cx="41" cy="28.5" r="1.4" />
-          </>
-        )}
-        {name === 'wedding' && (
-          <>
-            <path d="M10 16 C13 8.5 35 8.5 38 16" fill="currentColor" fillOpacity="0.1" />
-            <path d="M7 16 H41" />
-            <path d="M12 16 V40 M36 16 V40" />
-            <path d="M5 40 H43" />
-            <path d="M12 20 C17 26 31 26 36 20" opacity="0.75" />
-            <circle cx="18" cy="23.6" r="0.9" fill="currentColor" stroke="none" />
-            <circle cx="24" cy="25" r="0.9" fill="currentColor" stroke="none" />
-            <circle cx="30" cy="23.6" r="0.9" fill="currentColor" stroke="none" />
-            <path d="M24 4 V9" />
-            <circle cx="24" cy="3.5" r="1.2" fill="currentColor" stroke="none" />
-            <path d="M24 38 C20.5 35 21.5 31 24 28.5 C26.5 31 27.5 35 24 38Z" fill="currentColor" fillOpacity="0.2" />
-          </>
-        )}
-      </g>
-    </svg>
-  )
-}
 
 /* ---------- small UI icons ---------- */
 const ui = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.6, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const }
