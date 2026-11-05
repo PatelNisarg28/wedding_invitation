@@ -418,3 +418,127 @@ export function LeafShadow({ style, className = '' }: { style?: CSSProperties; c
     </svg>
   )
 }
+
+/* ---------- palace skyline (gold line-art for the countdown band) ---------- */
+type Branch = { d: string; leaves: { x: number; y: number; a: number; l: number }[] }
+
+/** A line-art tree with leafy branches, rooted at (x, ground). */
+function buildTree(x: number, ground: number, h: number, seed: number): Branch[] {
+  const trunkTop: Pt = [x + 4, ground - h * 0.62]
+  const branches: Branch[] = []
+  const trunk = `M${x} ${ground} C${x - 3} ${ground - h * 0.25} ${x + 7} ${ground - h * 0.42} ${trunkTop[0]} ${trunkTop[1]}`
+  branches.push({ d: trunk, leaves: [] })
+  const arms: [number, number][] = [
+    [-0.9, 0.55],
+    [-0.45, 0.85],
+    [0.1, 1],
+    [0.55, 0.85],
+    [0.95, 0.55],
+  ]
+  arms.forEach(([dx, dy], i) => {
+    const p0: Pt = [trunkTop[0], trunkTop[1] + (i % 2) * 6]
+    const p3: Pt = [trunkTop[0] + dx * h * 0.42, trunkTop[1] - dy * h * 0.36]
+    const p1: Pt = [p0[0] + dx * h * 0.1, p0[1] - h * 0.12]
+    const p2: Pt = [p3[0] - dx * h * 0.12, p3[1] + h * 0.06]
+    const leaves: Branch['leaves'] = []
+    for (let k = 1; k <= 6; k++) {
+      const t = k / 6.4
+      const [lx, ly] = bez(p0, p1, p2, p3, t)
+      const [nx, ny] = bez(p0, p1, p2, p3, Math.min(1, t + 0.02))
+      const along = (Math.atan2(ny - ly, nx - lx) * 180) / Math.PI + 90
+      leaves.push({ x: lx, y: ly, a: along + (k % 2 ? -55 : 55) + (r01(seed + i * 7 + k) - 0.5) * 20, l: 9 + r01(seed + k) * 5 })
+    }
+    leaves.push({ x: p3[0], y: p3[1], a: (Math.atan2(p3[1] - p2[1], p3[0] - p2[0]) * 180) / Math.PI + 90, l: 11 })
+    branches.push({ d: `M${p0} C${p1} ${p2} ${p3}`, leaves })
+  })
+  return branches
+}
+
+const GROUND = 192
+const TREES = [
+  { x: 92, h: 150, s: 11 },
+  { x: 228, h: 104, s: 23 },
+  { x: 348, h: 70, s: 37 },
+  { x: 1108, h: 150, s: 41 },
+  { x: 972, h: 104, s: 53 },
+  { x: 852, h: 70, s: 67 },
+].map((t) => buildTree(t.x, GROUND, t.h, t.s))
+
+/** A palace pavilion between trees, drawn in fine gold lines, sitting on the band's lower edge. */
+export const PalaceSkyline = memo(function PalaceSkyline(props: P) {
+  const pillars = [560, 584, 610, 634]
+  return (
+    <svg viewBox="0 0 1200 200" fill="none" aria-hidden="true" preserveAspectRatio="xMidYMax slice" {...props}>
+      <g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+        {/* distant hills */}
+        <path d="M0 176 Q150 132 310 166 T640 154 T930 162 T1200 142" strokeWidth="1" opacity="0.35" />
+        {/* ground */}
+        <path d={`M0 ${GROUND} H1200`} strokeWidth="1.2" />
+        {/* side walls with small arched niches */}
+        <g strokeWidth="1" opacity="0.8">
+          <path d="M430 192 V160 H544 M656 160 H770 V192" />
+          {[446, 474, 502, 676, 704, 732].map((x) => (
+            <path key={x} d={`M${x} 192 V176 Q${x + 9} 164 ${x + 18} 176 V192`} />
+          ))}
+          <path d="M424 160 H430 M770 160 H776" />
+        </g>
+        {/* steps and plinth */}
+        <g strokeWidth="1.2">
+          <path d="M520 192 V182 H680 V192" />
+          <path d="M532 182 V172 H668 V182" />
+          <path d="M544 172 V164 H656 V172" />
+        </g>
+        {/* pillars and arches */}
+        <g strokeWidth="1.2">
+          {pillars.map((x) => (
+            <g key={x}>
+              <path d={`M${x} 164 V108 M${x + 6} 164 V108`} />
+              <path d={`M${x - 2} 108 H${x + 8} M${x - 2} 164 H${x + 8}`} />
+            </g>
+          ))}
+          {pillars.slice(0, -1).map((x, i) => (
+            <path key={x} d={`M${x + 6} 134 C${x + 8} 120 ${pillars[i + 1] - 2} 120 ${pillars[i + 1]} 134`} />
+          ))}
+        </g>
+        {/* eaves (chhajja), railing and corner kiosks */}
+        <g strokeWidth="1.2">
+          <path d="M538 108 H662 L654 98 H546 Z" />
+          <path d="M552 98 V88 H648 V98" />
+          {[560, 572, 584, 596, 608, 620, 632, 644].map((x) => (
+            <path key={x} d={`M${x} 98 V90`} strokeWidth="0.8" />
+          ))}
+          <path d="M540 98 C540 86 548 80 550 76 C552 80 560 86 560 98" />
+          <path d="M640 98 C640 86 648 80 650 76 C652 80 660 86 660 98" />
+          <path d="M550 76 V70 M650 76 V70" />
+        </g>
+        {/* dome with lotus base and finial */}
+        <g strokeWidth="1.3">
+          <path d="M568 88 C568 60 590 46 600 40 C610 46 632 60 632 88" />
+          <path d="M572 88 Q586 80 600 88 Q614 80 628 88" strokeWidth="1" />
+          <path d="M600 40 V26" />
+          <circle cx="600" cy="24" r="2.4" />
+          <circle cx="600" cy="32" r="1.6" />
+        </g>
+        {/* trees and shrubs */}
+        <g strokeWidth="1.1">
+          {TREES.map((tree, ti) =>
+            tree.map((br, bi) => (
+              <g key={`${ti}-${bi}`}>
+                <path d={br.d} strokeWidth={bi === 0 ? 1.6 : 1} />
+                {br.leaves.map((lf, li) => (
+                  <path key={li} d={leafD(lf.l, lf.l * 0.36)} transform={`translate(${f(lf.x)} ${f(lf.y)}) rotate(${f(lf.a)})`} strokeWidth="0.9" />
+                ))}
+              </g>
+            )),
+          )}
+        </g>
+        {/* grass tufts */}
+        <g strokeWidth="0.9" opacity="0.8">
+          {[30, 170, 300, 410, 470, 730, 790, 900, 1030, 1170].map((x) => (
+            <path key={x} d={`M${x} 192 q-2 -7 -6 -10 M${x} 192 q0 -8 1 -12 M${x} 192 q3 -6 7 -9`} />
+          ))}
+        </g>
+      </g>
+    </svg>
+  )
+})

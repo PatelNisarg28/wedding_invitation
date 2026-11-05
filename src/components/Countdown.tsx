@@ -1,8 +1,20 @@
 import { AnimatePresence, m } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import { events, venues, WEDDING_START } from '../content/wedding'
+import { city, events, venues, WEDDING_START } from '../content/wedding'
 import { useLang } from '../i18n/LanguageContext'
+import { Divider, IconPin } from './Ornaments'
 import { SectionHead } from './Reveal'
+import { PalaceSkyline } from './Scenery'
+
+function IconCalendar() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+      <rect x="3.5" y="5" width="17" height="15" rx="2.5" />
+      <path d="M3.5 9.5h17M8 3v4M16 3v4" />
+      <path d="M8 13h.01M12 13h.01M16 13h.01M8 16.5h.01M12 16.5h.01" strokeWidth="2.2" />
+    </svg>
+  )
+}
 
 const TARGET = new Date(WEDDING_START).getTime()
 
@@ -78,12 +90,29 @@ export function Countdown() {
               <Cell value={p.minutes} label={t.countdown.minutes} />
               <Cell value={p.seconds} label={t.countdown.seconds} />
             </div>
-            <p className="cd-target">
-              {l(main.name)} · {fmtDate(main.start, { year: true })} · {fmtTime(main.start)} · {l(venues[main.venueId].name)}
-            </p>
+            <div className="cd-details">
+              <Divider className="cd-divider" />
+              <p className="cd-line">
+                <IconCalendar />
+                <span>{l(main.name)}</span>
+                <i className="sep" aria-hidden="true" />
+                <span className="when">
+                  {fmtDate(main.start, { year: true })}
+                  <i className="sep" aria-hidden="true" />
+                  {fmtTime(main.start)}
+                </span>
+              </p>
+              <p className="cd-line">
+                <IconPin />
+                <span>
+                  {l(venues[main.venueId].name)}, {l(city).split(',')[0]}
+                </span>
+              </p>
+            </div>
           </>
         )}
       </div>
+      <PalaceSkyline className="cd-palace" />
     </section>
   )
 }

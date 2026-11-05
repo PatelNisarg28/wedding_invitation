@@ -2624,3 +2624,78 @@ html[data-lang='hi'] .note-sign {
   font-style: normal;
   font-size: 18px;
 }
+
+/* ---------- countdown: ceremony details and the palace skyline ---------- */
+.countdown-band {
+  position: relative;
+  padding-bottom: calc(var(--section-pad) + clamp(110px, 16vw, 190px));
+}
+.cd-details {
+  margin-top: 30px;
+  text-align: center;
+}
+.cd-divider {
+  width: 200px;
+  margin: 0 auto 18px;
+  color: var(--gold-soft);
+}
+.cd-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px 12px;
+  margin: 0 auto;
+  max-width: 640px;
+  font-family: var(--serif);
+  font-size: clamp(18px, 2.4vw, 22px);
+  line-height: 1.35;
+  color: #fbf1e2;
+}
+.cd-line + .cd-line {
+  margin-top: 10px;
+}
+.cd-line svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  color: var(--gold-soft);
+}
+.cd-line .sep {
+  width: 1px;
+  height: 18px;
+  background: rgba(217, 185, 122, 0.6);
+}
+.cd-line .when {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+/* phones: "Wedding Ceremony" on its own line, then "date · time", then the venue */
+@media (max-width: 520px) {
+  .cd-line > .sep {
+    display: none;
+  }
+  .cd-line .when {
+    flex-basis: 100%;
+    justify-content: center;
+    gap: 8px;
+  }
+  .cd-line .when .sep {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--gold-soft);
+  }
+}
+.cd-palace {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: clamp(120px, 17vw, 210px);
+  color: var(--gold-soft);
+  opacity: 0.55;
+  pointer-events: none;
+}
