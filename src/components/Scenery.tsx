@@ -1,6 +1,6 @@
 /**
  * Hand-drawn scenery for the royal maroon theme: hanging bougainvillea, temple bells,
- * carved pillars, the elephant-and-chhatri emblem, brass urli, kalash and a lit diya.
+ * carved pillars, the elephant-and-chhatri emblem, brass urlis and lit diyas.
  * Everything is inline SVG (no image downloads) and every movement is a CSS animation
  * on transform/opacity only, switched off for reduced-motion users (see global.css).
  */
@@ -183,67 +183,33 @@ export function Pillar(props: P) {
 }
 
 /* ---------- elephants under a royal chhatri ---------- */
-/** A caparisoned elephant facing right, trunk raised in greeting (viewBox units 132 × 100). */
-function Elephant({ flip }: { flip?: boolean }) {
-  return (
-    <g transform={flip ? 'translate(340 8) scale(-1 1)' : 'translate(0 8)'}>
-      <g className="elephant-bob">
-        <path d="M71 62 H84 V90 C84 92.5 82.5 94 80 94 H75 C72.5 94 71 92.5 71 90Z" fill="#5a1220"/>
-        <path d="M38 64 H51 V90 C51 92.5 49.5 94 47 94 H42 C39.5 94 38 92.5 38 90Z" fill="#5a1220"/>
-        <path d="M15 42 C11 48 10 56 11 63" stroke="#7a1e2c" strokeWidth="1.8" fill="none" strokeLinecap="round"/>
-        <path d="M11 62 l-2 5 l2.5 -1.5 l1 3 l1 -3.5Z" fill="#7a1e2c"/>
-        <path fill="#7a1e2c" d="M15 40 C17 24 32 15 52 14 C62 13.5 70 15.5 76 19 C80 12 92 9 102 11 C110 13.5 114.5 22 113.5 32 C113 37 113.5 42 116 46 C119.5 50.5 126.5 49.5 128.5 42 C130.5 35 129.5 26.5 126.5 21.5 C125 18.5 121.8 17.8 120.6 20.2 C119.8 22 121.2 23.2 122 24.2 C123.2 29 122.8 35 120.2 39.6 C118 43.5 114.5 46.5 110.5 48.8 C107.5 50.6 105.5 51.5 104 53 C101 56.5 98.5 59 96 61 V90 C96 92.5 94.5 94 92 94 H85 C82.5 94 81 92.5 81 90 V66 C70 70 52 70 41 66 V90 C41 92.5 39.5 94 37 94 H30 C27.5 94 26 92.5 26 90 V61 C19 57 15 50 15 40Z"/>
-        <path d="M79 23 C70 26 67 38 69 50 C71 59 80 62 87 57 C91 52 91.5 40 89.5 31 C88 26 84 22.5 79 23Z" fill="#5f1422" stroke="#c9a24f" strokeWidth="0.9"/>
-        <path d="M80 28 C75 33 74.5 43 76.5 50" stroke="#c9a24f" strokeWidth="0.6" opacity="0.6" fill="none"/>
-        <path d="M27 21 C37 15 56 13 70 16 L70 50 q-3.5 4.5 -7 0 q-3.5 4.5 -7 0 q-3.5 4.5 -7 0 q-3.5 4.5 -7 0 q-3.5 4.5 -7 0 q-3.5 4.5 -8 0Z" fill="#c9a24f"/>
-        <path d="M30.5 23 C39 18.5 55 17 66.5 19.5 L66.5 46.5 H30.5Z" fill="#a8263a"/>
-        <path d="M33 26 C41 22 54 21 64 23 L64 44 H33Z" fill="none" stroke="#e6c77d" strokeWidth="0.6" strokeDasharray="1.6 1.6"/>
-        <g fill="#e6c77d">
-        <path d="M48.5 27 l4 6.5 l-4 6.5 l-4 -6.5Z"/>
-        <circle cx="38.5" cy="33.5" r="1.6"/><circle cx="58.5" cy="33.5" r="1.6"/>
-        </g>
-        <g fill="#c9a24f">
-        <path d="M66.5 52 v2.4" stroke="#c9a24f" strokeWidth="0.7"/><circle cx="66.5" cy="55.6" r="1.25"/><path d="M59.5 52 v2.4" stroke="#c9a24f" strokeWidth="0.7"/><circle cx="59.5" cy="55.6" r="1.25"/><path d="M52.5 52 v2.4" stroke="#c9a24f" strokeWidth="0.7"/><circle cx="52.5" cy="55.6" r="1.25"/><path d="M45.5 52 v2.4" stroke="#c9a24f" strokeWidth="0.7"/><circle cx="45.5" cy="55.6" r="1.25"/><path d="M38.5 52 v2.4" stroke="#c9a24f" strokeWidth="0.7"/><circle cx="38.5" cy="55.6" r="1.25"/><path d="M31 52 v2.4" stroke="#c9a24f" strokeWidth="0.7"/><circle cx="31" cy="55.6" r="1.25"/>
-        </g>
-        <path d="M88 14 C95 9 105 10 110.5 16 L105 30 C100 26.5 93.5 21 88 14Z" fill="#c9a24f"/>
-        <path d="M92 15.2 C97 12.4 104 13 107.4 16.6 L104 25.4 C100.4 23 95.6 19.4 92 15.2Z" fill="#a8263a"/>
-        <path d="M105 30 v3" stroke="#c9a24f" strokeWidth="0.8"/><circle cx="105" cy="34" r="1.5" fill="#c9a24f"/>
-        <circle cx="99" cy="29.5" r="1.4" fill="#fbf1e2"/>
-        <path d="M96.5 27.5 C98 26.5 100 26.5 101.5 27.5" stroke="#3c0a14" strokeWidth="0.6" fill="none"/>
-        <path d="M106.5 50.5 C109.5 56.5 115.5 57.5 119 53.8" stroke="#fbf1e2" strokeWidth="2.6" strokeLinecap="round" fill="none"/>
-        <path d="M117.5 44.5 l3.4 -2.6 M120.5 38 l4 -1 M122 31.5 l4.2 0 M122.3 25.5 l3.8 0.8" stroke="#5a1220" strokeWidth="0.6"/>
-        <g stroke="#c9a24f" strokeWidth="1.6"><path d="M81 86 H96 M26 86 H41"/></g>
-        <g fill="#fbf1e2" opacity="0.85"><circle cx="84.5" cy="93" r="1"/><circle cx="88.5" cy="93.3" r="1"/><circle cx="92.5" cy="93" r="1"/><circle cx="29.5" cy="93" r="1"/><circle cx="33.5" cy="93.3" r="1"/><circle cx="37.5" cy="93" r="1"/></g>
-      </g>
-    </g>
-  )
-}
+const ELEPHANT_SRC = `${import.meta.env.BASE_URL}elephant.webp`
 
-/** Two elephants greeting each other under a royal chhatri. */
-export function ElephantEmblem(props: P) {
+/** The family's painted elephant, twice, greeting each other under a royal chhatri. */
+export function ElephantEmblem() {
   return (
-    <svg viewBox="0 0 340 112" fill="none" aria-hidden="true" {...props}>
-      <Elephant />
-      <Elephant flip />
-      <g className="chhatri">
-        <path d="M170 6 V104" stroke="#8e6a2e" strokeWidth="2.2" />
-        <circle cx="170" cy="5" r="3.4" fill="#c9a24f" />
-        <path d="M138 34 C142 14 198 14 202 34Z" fill="#a8263a" stroke="#8e6a2e" strokeWidth="1.2" />
-        <path d="M146 29 C152 19 188 19 194 29" stroke="#c9a24f" strokeWidth="1.2" />
-        <path d="M170 15 V34" stroke="#c9a24f" strokeWidth="0.8" opacity="0.7" />
-        <g className="chhatri-fringe">
-          <path d="M138 34 q4 6 8 0 q4 6 8 0 q4 6 8 0 q4 6 8 0 q4 6 8 0 q4 6 8 0 q4 6 8 0 q4 6 8 0" stroke="#c9a24f" strokeWidth="1.4" fill="#c9a24f" fillOpacity="0.3" />
-          {[142, 158, 182, 198].map((x) => (
-            <g key={x}>
-              <path d={`M${x} 38 v5`} stroke="#c9a24f" strokeWidth="0.8" />
-              <circle cx={x} cy={44.5} r="1.7" fill="#c9a24f" />
-            </g>
-          ))}
+    <div className="hero-emblem" aria-hidden="true">
+      <img className="emblem-elephant" src={ELEPHANT_SRC} alt="" width={480} height={337} decoding="async" />
+      <svg className="emblem-chhatri" viewBox="0 0 70 104" fill="none">
+        <g className="chhatri">
+          <path d="M35 6 V102" stroke="#8e6a2e" strokeWidth="2.2" />
+          <circle cx="35" cy="5" r="3.4" fill="#c9a24f" />
+          <path d="M3 34 C7 14 63 14 67 34Z" fill="#a8263a" stroke="#8e6a2e" strokeWidth="1.2" />
+          <path d="M11 29 C17 19 53 19 59 29" stroke="#c9a24f" strokeWidth="1.2" />
+          <g className="chhatri-fringe">
+            <path d="M3 34 q4 6 8 0 q4 6 8 0 q4 6 8 0 q4 6 8 0 q4 6 8 0 q4 6 8 0 q4 6 8 0 q4 6 8 0" stroke="#c9a24f" strokeWidth="1.4" fill="#c9a24f" fillOpacity="0.3" />
+            {[7, 23, 47, 63].map((x) => (
+              <g key={x}>
+                <path d={`M${x} 38 v5`} stroke="#c9a24f" strokeWidth="0.8" />
+                <circle cx={x} cy={44.5} r="1.7" fill="#c9a24f" />
+              </g>
+            ))}
+          </g>
+          <path d="M25 102 H45 L40.5 95 H29.5Z" fill="#c9a24f" />
         </g>
-        <path d="M160 104 H180 L175.5 97 H164.5Z" fill="#c9a24f" />
-      </g>
-      <path d="M6 107 H334" stroke="#c9a24f" strokeWidth="1" opacity="0.7" />
-    </svg>
+      </svg>
+      <img className="emblem-elephant flip" src={ELEPHANT_SRC} alt="" width={480} height={337} decoding="async" />
+    </div>
   )
 }
 
@@ -314,30 +280,6 @@ export function Urli(props: P) {
           </g>
         </g>
       ))}
-    </svg>
-  )
-}
-
-/** Kalash with mango leaves and coconut. */
-export function Kalash(props: P) {
-  const leaves = [-62, -36, -12, 12, 36, 62]
-  return (
-    <svg viewBox="0 0 100 130" fill="none" aria-hidden="true" overflow="visible" {...props}>
-      <defs>{BRASS}</defs>
-      {leaves.map((a, i) => (
-        <g key={a} transform={`translate(50 46) rotate(${a})`}>
-          <g className="flutter" style={{ animationDelay: `${-i * 0.6}s` }}>
-            <path d={leafD(34, 9)} fill={i % 2 ? '#5c7a36' : '#6f8f45'} />
-          </g>
-        </g>
-      ))}
-      <ellipse cx="50" cy="30" rx="13" ry="16" fill="#8a5a2b" />
-      <path d="M41 22 C45 18 55 18 59 22" stroke="#5e3c1a" strokeWidth="1" />
-      <path d="M36 44 H64 L62 52 H38Z" fill="url(#brass)" />
-      <path d="M38 52 C14 60 14 112 34 122 H66 C86 112 86 60 62 52Z" fill="url(#brass)" />
-      <path d="M24 82 C40 90 60 90 76 82" stroke="#a8263a" strokeWidth="3" />
-      <path d="M24 82 C40 90 60 90 76 82" stroke="#f0c75e" strokeWidth="0.8" strokeDasharray="2 3" />
-      <path d="M34 122 H66 L64 128 H36Z" fill="#7d5a1f" />
     </svg>
   )
 }

@@ -30,7 +30,7 @@ const en = {
     sonOf: (p: string) => `Son of ${p}`,
     daughterOf: (p: string) => `Daughter of ${p}`,
     weds: 'weds',
-    muhurat: 'Tuesday, Posh Vad 4, Samvat 2083',
+    muhurat: 'Tuesday, 26th January 2027',
   },
   countdown: {
     eyebrow: 'Counting down',
@@ -153,7 +153,7 @@ const hi: Dict = {
     sonOf: (p: string) => `${p} के सुपुत्र`,
     daughterOf: (p: string) => `${p} की सुपुत्री`,
     weds: 'संग',
-    muhurat: 'मंगलवार, पौष वद 4, विक्रम संवत 2083',
+    muhurat: 'मंगलवार, 26 जनवरी 2027',
   },
   countdown: {
     eyebrow: 'शुभ घड़ी की प्रतीक्षा',

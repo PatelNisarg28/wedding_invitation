@@ -763,15 +763,37 @@ html[data-lang='hi'] .opening .msg {
   text-align: center;
 }
 .hero-emblem {
-  width: clamp(220px, 24vw, 320px);
-  margin: 0 auto 6px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(2px, 1vw, 10px);
+  width: clamp(250px, 30vw, 400px);
+  margin: 0 auto 4px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(184, 137, 62, 0.6);
 }
-.elephant-bob {
+.emblem-elephant {
+  width: 40%;
+  height: auto;
   animation: bob 3.4s ease-in-out infinite alternate;
+}
+.emblem-elephant.flip {
+  transform: scaleX(-1);
+  animation-name: bob-flip;
+  animation-delay: -1.7s;
+}
+@keyframes bob-flip {
+  from { transform: scaleX(-1) translateY(0); }
+  to { transform: scaleX(-1) translateY(-2px); }
+}
+.emblem-chhatri {
+  width: 17%;
+  flex: none;
+  overflow: visible;
 }
 @keyframes bob {
   from { transform: translateY(0); }
-  to { transform: translateY(-1.6px); }
+  to { transform: translateY(-2px); }
 }
 .chhatri-fringe {
   transform-box: fill-box;
@@ -898,9 +920,6 @@ html[data-lang='hi'] .hero-names {
 .hero-ground.right {
   right: clamp(8px, 7vw, 140px);
 }
-.hero-ground .kalash {
-  width: clamp(58px, 8vw, 100px);
-}
 .hero-ground .urli {
   width: clamp(104px, 15vw, 190px);
   margin-bottom: -4px;
@@ -950,9 +969,6 @@ html[data-lang='hi'] .hero-names {
   .hero-ground.right {
     right: 2px;
   }
-  .hero-ground .kalash {
-    width: 52px;
-  }
   .hero-ground .urli {
     width: 92px;
   }
@@ -965,55 +981,6 @@ html[data-lang='hi'] .hero-names {
   .hero-bell.right {
     right: 26%;
   }
-}
-
-.scroll-cue {
-  position: absolute;
-  bottom: 14px;
-  left: 50%;
-  translate: -50% 0;
-  z-index: 4;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  color: var(--maroon);
-  text-decoration: none;
-  padding: 6px;
-}
-.scroll-cue i {
-  position: relative;
-  width: 22px;
-  height: 34px;
-  border-radius: 12px;
-  border: 1.5px solid currentColor;
-  opacity: 0.8;
-}
-.scroll-cue i::before {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 6px;
-  width: 3px;
-  height: 7px;
-  margin-left: -1.5px;
-  border-radius: 2px;
-  background: currentColor;
-  animation: cue 2.2s var(--ease) infinite;
-}
-.scroll-cue::after {
-  content: '';
-  width: 7px;
-  height: 7px;
-  border-right: 1.5px solid currentColor;
-  border-bottom: 1.5px solid currentColor;
-  transform: rotate(45deg);
-  opacity: 0.7;
-}
-@keyframes cue {
-  0% { transform: translateY(0); opacity: 0; }
-  30% { opacity: 1; }
-  100% { transform: translateY(10px); opacity: 0; }
 }
 
 /* ---------- falling petals and leaves (whole page) ---------- */
@@ -1900,8 +1867,7 @@ footer.site-footer {
   html {
     scroll-behavior: auto;
   }
-  .petals,
-  .scroll-cue i {
+  .petals {
     display: none;
   }
   *,
