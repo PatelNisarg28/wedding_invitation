@@ -424,6 +424,10 @@ export function Rsvp() {
                             <IconAlert /> {t.rsvp.errors[errors.guests]}
                           </p>
                         )}
+                        <p className="family-note">
+                          <IconHeart />
+                          {t.rsvp.family}
+                        </p>
                       </div>
                       <div className="field" style={{ marginTop: 26 }}>
                         <span className="field-label">{t.rsvp.stayTitle}</span>
