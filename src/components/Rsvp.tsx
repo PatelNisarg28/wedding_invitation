@@ -310,114 +310,83 @@ export function Rsvp() {
                       <IconAlert /> {t.rsvp.errors[errors.attending]}
                     </p>
                   )}
-                  <AnimatePresence mode="wait" initial={false}>
-                    {attending && (
-                      <m.p
-                        key={attending}
-                        className="choice-line"
-                        aria-live="polite"
-                        initial={{ opacity: 0, y: 6 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -4 }}
-                        transition={{ duration: 0.35, ease: EASE }}
-                      >
-                        {attending === 'yes' ? t.rsvp.acceptLine : t.rsvp.declineLine}
-                      </m.p>
-                    )}
-                  </AnimatePresence>
                 </div>
 
-                {/* everyone else gets the couple's note for their answer (must-come friends get Nisarg's own, below) */}
+                {/*
+                  One note per answer. Everyone gets the couple's note; a must-come friend who
+                  declines gets a gentle note from Nisarg asking them to reconsider instead.
+                */}
                 <AnimatePresence mode="wait" initial={false}>
-                  {!friend && attending && (
+                  {attending && (
                     <m.div
-                      key={`note-${attending}`}
+                      key={needsReason ? 'reconsider' : `note-${attending}`}
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.45, ease: EASE }}
                       style={{ overflow: 'hidden' }}
                     >
-                      <div className="friend-note couple-note" role="note">
-                        <div className={`friend-seal ${attending === 'no' ? 'pair' : ''}`} aria-hidden="true">
-                          {attending === 'yes' ? (
-                            'N'
-                          ) : (
-                            <>
-                              N<span>&amp;</span>D
-                            </>
+                      {needsReason ? (
+                        <div className="friend-note couple-note reconsider" role="note" aria-live="polite">
+                          <div className="friend-seal" aria-hidden="true">
+                            N
+                          </div>
+                          <div className="friend-from">{t.rsvp.friend.from}</div>
+                          {t.rsvp.friend.body.map((para) => (
+                            <p key={para} className="friend-body">
+                              {para}
+                            </p>
+                          ))}
+                          <div className="note-sign">
+                            <span>{t.rsvp.note.withLove}</span>
+                            {t.rsvp.friend.sign}
+                          </div>
+                          <button type="button" className="btn small friend-come" onClick={() => answer('yes')}>
+                            <IconHeart width={18} height={18} />
+                            {t.rsvp.friend.comeInstead}
+                          </button>
+                          <label className="friend-confirm">
+                            <input
+                              ref={reasonRef}
+                              type="checkbox"
+                              checked={reasonOk}
+                              onChange={(e) => {
+                                setReasonOk(e.target.checked)
+                                setErrors((x) => ({ ...x, reason: undefined }))
+                              }}
+                              aria-invalid={!!errors.reason}
+                            />
+                            <span>{t.rsvp.friend.confirm}</span>
+                          </label>
+                          {errors.reason && (
+                            <p className="error">
+                              <IconAlert /> {t.rsvp.errors[errors.reason]}
+                            </p>
                           )}
                         </div>
-                        <div className="friend-from">{attending === 'yes' ? t.rsvp.note.acceptFrom : t.rsvp.note.declineFrom}</div>
-                        {(attending === 'yes' ? t.rsvp.note.acceptBody : t.rsvp.note.declineBody).map((para) => (
-                          <p key={para} className="friend-body">
-                            {para}
-                          </p>
-                        ))}
-                        <div className="note-sign">
-                          <span>{t.rsvp.note.withLove}</span>
-                          {t.rsvp.note.names}
-                        </div>
-                      </div>
-                    </m.div>
-                  )}
-                </AnimatePresence>
-
-                <AnimatePresence initial={false}>
-                  {friend && (
-                    <m.div
-                      key="friend"
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.45, ease: EASE }}
-                      style={{ overflow: 'hidden' }}
-                    >
-                      <div className={`friend-note ${needsReason ? 'think' : ''}`} role="note" aria-live="polite">
-                        <div className="friend-seal" aria-hidden="true">
-                          N
-                        </div>
-                        <div className="friend-from">{t.rsvp.friend.from}</div>
-                        {needsReason ? (
-                          <>
-                            <p className="friend-hello">{t.rsvp.friend.thinkTitle(friend.name)}</p>
-                            <p className="friend-body">{t.rsvp.friend.thinkBody}</p>
-                            <div className="friend-sign">{t.rsvp.friend.sign}</div>
-                            <button
-                              type="button"
-                              className="btn small friend-come"
-                              onClick={() => answer('yes')}
-                            >
-                              <IconHeart width={18} height={18} />
-                              {t.rsvp.friend.comeInstead}
-                            </button>
-                            <label className="friend-confirm">
-                              <input
-                                ref={reasonRef}
-                                type="checkbox"
-                                checked={reasonOk}
-                                onChange={(e) => {
-                                  setReasonOk(e.target.checked)
-                                  setErrors((x) => ({ ...x, reason: undefined }))
-                                }}
-                                aria-invalid={!!errors.reason}
-                              />
-                              <span>{t.rsvp.friend.confirm}</span>
-                            </label>
-                            {errors.reason && (
-                              <p className="error">
-                                <IconAlert /> {t.rsvp.errors[errors.reason]}
-                              </p>
+                      ) : (
+                        <div className="friend-note couple-note" role="note">
+                          <div className={`friend-seal ${attending === 'no' ? 'pair' : ''}`} aria-hidden="true">
+                            {attending === 'yes' ? (
+                              'N'
+                            ) : (
+                              <>
+                                N<span>&amp;</span>D
+                              </>
                             )}
-                          </>
-                        ) : (
-                          <>
-                            <p className="friend-hello">{t.rsvp.friend.hello(friend.name)}</p>
-                            <p className="friend-body">{t.rsvp.friend.body}</p>
-                            <div className="friend-sign">{t.rsvp.friend.sign}</div>
-                          </>
-                        )}
-                      </div>
+                          </div>
+                          <div className="friend-from">{attending === 'yes' ? t.rsvp.note.acceptFrom : t.rsvp.note.declineFrom}</div>
+                          {(attending === 'yes' ? t.rsvp.note.acceptBody : t.rsvp.note.declineBody).map((para) => (
+                            <p key={para} className="friend-body">
+                              {para}
+                            </p>
+                          ))}
+                          <div className="note-sign">
+                            <span>{t.rsvp.note.withLove}</span>
+                            {t.rsvp.note.names}
+                          </div>
+                        </div>
+                      )}
                     </m.div>
                   )}
                 </AnimatePresence>

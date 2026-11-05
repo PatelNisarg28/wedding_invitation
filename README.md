@@ -14,7 +14,7 @@ The bilingual (English / हिंदी) wedding invitation website for **https
 | --- | --- |
 | All wedding facts (dates, times, venues, map links, phone numbers) | `src/content/wedding.ts` |
 | All English and Hindi text | `src/i18n/translations.ts` |
-| Must-come friends (personal note from Nisarg in the RSVP form) | `src/content/friends.ts` |
+| Must-come friends (Nisarg’s note if they decline in the RSVP form) | `src/content/friends.ts` |
 | Ready-made RSVP messages | `src/i18n/translations.ts` → `rsvp.quick` |
 | Colours, fonts, spacing | `src/styles/global.css` (`:root` variables — maroon & gold theme) |
 | Illustrations (flowers, bells, pillars, elephants, diya) and falling petals | `src/components/Scenery.tsx` |

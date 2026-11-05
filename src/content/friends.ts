@@ -1,7 +1,8 @@
 /**
- * Close friends Nisarg has personally asked to be there.
- * When one of them types their name in the RSVP form, a note from Nisarg appears,
- * and declining needs a genuine reason. Add people here — one entry per person.
+ * Close friends Nisarg especially hopes will be there.
+ * If one of them chooses "Regretfully Decline", a gentle note from Nisarg asks them to
+ * reconsider, and declining needs a tick for an unavoidable reason. Accepting looks the
+ * same as for every other guest. Add people here — one entry per person.
  *
  * Matching is on the exact spelling, ignoring capitals and extra spaces; a surname
  * after the name and a trailing "bhai"/"ben"/"ji" are fine (see src/lib/friends.ts).
