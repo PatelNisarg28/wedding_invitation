@@ -5,6 +5,7 @@ import { matchFriend } from '../lib/friends'
 import { IconAlert, IconHeart, IconLeaf } from './Ornaments'
 import { SectionHead } from './Reveal'
 import { LeafShadow } from './Scenery'
+import { TravelReminder } from './TravelReminder'
 
 type Attending = 'yes' | 'no'
 interface Saved {
@@ -496,6 +497,21 @@ export function Rsvp() {
             )}
           </AnimatePresence>
         </div>
+
+        {/* travel reminder: only for guests who are coming (while filling the form or after accepting) */}
+        <AnimatePresence initial={false}>
+          {(showSuccess ? saved?.attending === 'yes' : attending === 'yes') && (
+            <m.div
+              key="travel"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 8 }}
+              transition={{ duration: 0.5, ease: EASE }}
+            >
+              <TravelReminder />
+            </m.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   )
