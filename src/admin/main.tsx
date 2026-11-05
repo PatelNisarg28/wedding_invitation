@@ -7,6 +7,7 @@ interface Row {
   name: string
   attending: number
   guests: number
+  needs_stay?: number
   message: string | null
   lang: string
   revision: number
@@ -14,7 +15,7 @@ interface Row {
   updated_at: string
 }
 interface Data {
-  summary: { responses: number; attending: number; declined: number; guests: number }
+  summary: { responses: number; attending: number; declined: number; guests: number; stay?: number; stayGuests?: number }
   rows: Row[]
 }
 
@@ -135,6 +136,9 @@ function Admin() {
             <div>
               <b>{data.summary.declined}</b>Declined
             </div>
+            <div>
+              <b>{data.summary.stay ?? 0}</b>Need a stay ({data.summary.stayGuests ?? 0} guests)
+            </div>
           </section>
           <div className="tools">
             <input placeholder="Search name…" value={q} onChange={(e) => setQ(e.target.value)} />
@@ -151,6 +155,7 @@ function Admin() {
                   <th>Name</th>
                   <th>Attending</th>
                   <th>Guests</th>
+                  <th>Stay</th>
                   <th>Message</th>
                   <th>Lang</th>
                   <th>Updated (IST)</th>
@@ -164,6 +169,7 @@ function Admin() {
                       <span className={`pill ${r.attending ? 'yes' : 'no'}`}>{r.attending ? 'Yes' : 'No'}</span>
                     </td>
                     <td>{r.attending ? r.guests : '—'}</td>
+                    <td>{r.attending && r.needs_stay ? <span className="pill stay">Needs stay</span> : '—'}</td>
                     <td className="msg">{r.message || '—'}</td>
                     <td>{r.lang.toUpperCase()}</td>
                     <td>
@@ -174,7 +180,7 @@ function Admin() {
                 ))}
                 {rows.length === 0 && (
                   <tr>
-                    <td colSpan={6} className="empty">
+                    <td colSpan={7} className="empty">
                       No responses yet.
                     </td>
                   </tr>

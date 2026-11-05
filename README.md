@@ -22,7 +22,7 @@ The bilingual (English / हिंदी) wedding invitation website for **https
 | RSVP API | `functions/api/rsvp.ts` |
 | Admin API (list + CSV) | `functions/api/admin/rsvps.ts` |
 | Admin page | `admin.html`, `src/admin/` → served at `/admin` |
-| Database schema | `migrations/0001_create_rsvps.sql` |
+| Database schema | `migrations/0001_create_rsvps.sql` (+ `needs_stay`, added automatically on first use by `functions/_lib.ts`) |
 | www → apex redirect | `functions/_middleware.ts` |
 | Security headers, caching | `public/_headers` |
 | Social preview image / icons | `public/og-image.jpg`, `public/*.png`, `public/favicon.svg` |
