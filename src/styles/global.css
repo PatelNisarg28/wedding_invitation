@@ -763,7 +763,7 @@ html[data-lang='hi'] .opening .msg {
   text-align: center;
 }
 .hero-emblem {
-  width: clamp(160px, 19vw, 250px);
+  width: clamp(220px, 24vw, 320px);
   margin: 0 auto 6px;
 }
 .elephant-bob {

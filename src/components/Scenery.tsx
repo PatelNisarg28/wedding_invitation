@@ -183,49 +183,66 @@ export function Pillar(props: P) {
 }
 
 /* ---------- elephants under a royal chhatri ---------- */
-const ELEPHANT =
-  'M6 27 C6 17 14 11 26 11 C34 11 40 12 44 14 C47 9 54 9 57 14 C59 18 58 23 56 26 C55 30 56 34 59 36 C61 37 60 40 57 39 C54 38 52 34 52 30 L51 30 L50 43 L45 43 L45 33 C38 34 29 34 23 33 L22 43 L17 43 L16 32 C12 31 9 32 8 34 C7 32 6 30 6 27Z'
-
-function Elephant({ x, flip }: { x: number; flip?: boolean }) {
+/** A caparisoned elephant facing right, trunk raised in greeting (viewBox units 132 × 100). */
+function Elephant({ flip }: { flip?: boolean }) {
   return (
-    <g transform={`translate(${x} 34)${flip ? ' translate(62 0) scale(-1 1)' : ''}`}>
+    <g transform={flip ? 'translate(340 8) scale(-1 1)' : 'translate(0 8)'}>
       <g className="elephant-bob">
-        <path d={ELEPHANT} fill="#7a1e2c" />
-        <path d="M44 16 C40 17 39 25 44 28 C47 27 48 21 46 17Z" fill="#5a1220" />
-        {/* saddle cloth with gold border and tassels */}
-        <path d="M20 12 C26 11 34 11 38 13 L37 25 C31 27 25 27 21 25Z" fill="#c9a24f" />
-        <path d="M22 14 C27 13 33 13 36 15 L35.5 23 C30.5 24.5 25.5 24.5 23 23Z" fill="#a8263a" />
-        <path d="M21 25 l1 3 M25 26.5 l0.5 3 M29 27 v3 M33 26.5 l-0.5 3 M37 25 l-1 3" stroke="#c9a24f" strokeWidth="1" />
-        {/* head ornament, eye and tusk */}
-        <path d="M49 11 C51 13 53 13 55 11 L52 17Z" fill="#c9a24f" />
-        <circle cx="53" cy="17" r="0.9" fill="#f6ead2" />
-        <path d="M54 29 C56 31.5 58.5 31.5 60 30" stroke="#f6ead2" strokeWidth="1.4" strokeLinecap="round" />
-        <path d="M45 41 H50 M17 41 H22" stroke="#c9a24f" strokeWidth="1.2" />
+        <path d="M71 62 H84 V90 C84 92.5 82.5 94 80 94 H75 C72.5 94 71 92.5 71 90Z" fill="#5a1220"/>
+        <path d="M38 64 H51 V90 C51 92.5 49.5 94 47 94 H42 C39.5 94 38 92.5 38 90Z" fill="#5a1220"/>
+        <path d="M15 42 C11 48 10 56 11 63" stroke="#7a1e2c" strokeWidth="1.8" fill="none" strokeLinecap="round"/>
+        <path d="M11 62 l-2 5 l2.5 -1.5 l1 3 l1 -3.5Z" fill="#7a1e2c"/>
+        <path fill="#7a1e2c" d="M15 40 C17 24 32 15 52 14 C62 13.5 70 15.5 76 19 C80 12 92 9 102 11 C110 13.5 114.5 22 113.5 32 C113 37 113.5 42 116 46 C119.5 50.5 126.5 49.5 128.5 42 C130.5 35 129.5 26.5 126.5 21.5 C125 18.5 121.8 17.8 120.6 20.2 C119.8 22 121.2 23.2 122 24.2 C123.2 29 122.8 35 120.2 39.6 C118 43.5 114.5 46.5 110.5 48.8 C107.5 50.6 105.5 51.5 104 53 C101 56.5 98.5 59 96 61 V90 C96 92.5 94.5 94 92 94 H85 C82.5 94 81 92.5 81 90 V66 C70 70 52 70 41 66 V90 C41 92.5 39.5 94 37 94 H30 C27.5 94 26 92.5 26 90 V61 C19 57 15 50 15 40Z"/>
+        <path d="M79 23 C70 26 67 38 69 50 C71 59 80 62 87 57 C91 52 91.5 40 89.5 31 C88 26 84 22.5 79 23Z" fill="#5f1422" stroke="#c9a24f" strokeWidth="0.9"/>
+        <path d="M80 28 C75 33 74.5 43 76.5 50" stroke="#c9a24f" strokeWidth="0.6" opacity="0.6" fill="none"/>
+        <path d="M27 21 C37 15 56 13 70 16 L70 50 q-3.5 4.5 -7 0 q-3.5 4.5 -7 0 q-3.5 4.5 -7 0 q-3.5 4.5 -7 0 q-3.5 4.5 -7 0 q-3.5 4.5 -8 0Z" fill="#c9a24f"/>
+        <path d="M30.5 23 C39 18.5 55 17 66.5 19.5 L66.5 46.5 H30.5Z" fill="#a8263a"/>
+        <path d="M33 26 C41 22 54 21 64 23 L64 44 H33Z" fill="none" stroke="#e6c77d" strokeWidth="0.6" strokeDasharray="1.6 1.6"/>
+        <g fill="#e6c77d">
+        <path d="M48.5 27 l4 6.5 l-4 6.5 l-4 -6.5Z"/>
+        <circle cx="38.5" cy="33.5" r="1.6"/><circle cx="58.5" cy="33.5" r="1.6"/>
+        </g>
+        <g fill="#c9a24f">
+        <path d="M66.5 52 v2.4" stroke="#c9a24f" strokeWidth="0.7"/><circle cx="66.5" cy="55.6" r="1.25"/><path d="M59.5 52 v2.4" stroke="#c9a24f" strokeWidth="0.7"/><circle cx="59.5" cy="55.6" r="1.25"/><path d="M52.5 52 v2.4" stroke="#c9a24f" strokeWidth="0.7"/><circle cx="52.5" cy="55.6" r="1.25"/><path d="M45.5 52 v2.4" stroke="#c9a24f" strokeWidth="0.7"/><circle cx="45.5" cy="55.6" r="1.25"/><path d="M38.5 52 v2.4" stroke="#c9a24f" strokeWidth="0.7"/><circle cx="38.5" cy="55.6" r="1.25"/><path d="M31 52 v2.4" stroke="#c9a24f" strokeWidth="0.7"/><circle cx="31" cy="55.6" r="1.25"/>
+        </g>
+        <path d="M88 14 C95 9 105 10 110.5 16 L105 30 C100 26.5 93.5 21 88 14Z" fill="#c9a24f"/>
+        <path d="M92 15.2 C97 12.4 104 13 107.4 16.6 L104 25.4 C100.4 23 95.6 19.4 92 15.2Z" fill="#a8263a"/>
+        <path d="M105 30 v3" stroke="#c9a24f" strokeWidth="0.8"/><circle cx="105" cy="34" r="1.5" fill="#c9a24f"/>
+        <circle cx="99" cy="29.5" r="1.4" fill="#fbf1e2"/>
+        <path d="M96.5 27.5 C98 26.5 100 26.5 101.5 27.5" stroke="#3c0a14" strokeWidth="0.6" fill="none"/>
+        <path d="M106.5 50.5 C109.5 56.5 115.5 57.5 119 53.8" stroke="#fbf1e2" strokeWidth="2.6" strokeLinecap="round" fill="none"/>
+        <path d="M117.5 44.5 l3.4 -2.6 M120.5 38 l4 -1 M122 31.5 l4.2 0 M122.3 25.5 l3.8 0.8" stroke="#5a1220" strokeWidth="0.6"/>
+        <g stroke="#c9a24f" strokeWidth="1.6"><path d="M81 86 H96 M26 86 H41"/></g>
+        <g fill="#fbf1e2" opacity="0.85"><circle cx="84.5" cy="93" r="1"/><circle cx="88.5" cy="93.3" r="1"/><circle cx="92.5" cy="93" r="1"/><circle cx="29.5" cy="93" r="1"/><circle cx="33.5" cy="93.3" r="1"/><circle cx="37.5" cy="93" r="1"/></g>
       </g>
     </g>
   )
 }
 
+/** Two elephants greeting each other under a royal chhatri. */
 export function ElephantEmblem(props: P) {
   return (
-    <svg viewBox="0 0 200 82" fill="none" aria-hidden="true" {...props}>
-      <Elephant x={10} />
-      <Elephant x={128} flip />
-      {/* chhatri */}
+    <svg viewBox="0 0 340 112" fill="none" aria-hidden="true" {...props}>
+      <Elephant />
+      <Elephant flip />
       <g className="chhatri">
-        <path d="M100 4 V76" stroke="#8e6a2e" strokeWidth="1.6" />
-        <circle cx="100" cy="4" r="2.4" fill="#c9a24f" />
-        <path d="M72 26 C76 12 124 12 128 26Z" fill="#a8263a" stroke="#8e6a2e" strokeWidth="1" />
-        <path d="M80 22 C86 14 114 14 120 22" stroke="#c9a24f" strokeWidth="1" />
+        <path d="M170 6 V104" stroke="#8e6a2e" strokeWidth="2.2" />
+        <circle cx="170" cy="5" r="3.4" fill="#c9a24f" />
+        <path d="M138 34 C142 14 198 14 202 34Z" fill="#a8263a" stroke="#8e6a2e" strokeWidth="1.2" />
+        <path d="M146 29 C152 19 188 19 194 29" stroke="#c9a24f" strokeWidth="1.2" />
+        <path d="M170 15 V34" stroke="#c9a24f" strokeWidth="0.8" opacity="0.7" />
         <g className="chhatri-fringe">
-          <path d="M72 26 q3.5 5 7 0 q3.5 5 7 0 q3.5 5 7 0 q3.5 5 7 0 q3.5 5 7 0 q3.5 5 7 0 q3.5 5 8 0" stroke="#c9a24f" strokeWidth="1.2" fill="#c9a24f" fillOpacity="0.25" />
-          {[75.5, 89.5, 103.5, 117.5].map((x) => (
-            <circle key={x} cx={x} cy={33} r="1.3" fill="#c9a24f" />
+          <path d="M138 34 q4 6 8 0 q4 6 8 0 q4 6 8 0 q4 6 8 0 q4 6 8 0 q4 6 8 0 q4 6 8 0 q4 6 8 0" stroke="#c9a24f" strokeWidth="1.4" fill="#c9a24f" fillOpacity="0.3" />
+          {[142, 158, 182, 198].map((x) => (
+            <g key={x}>
+              <path d={`M${x} 38 v5`} stroke="#c9a24f" strokeWidth="0.8" />
+              <circle cx={x} cy={44.5} r="1.7" fill="#c9a24f" />
+            </g>
           ))}
         </g>
-        <path d="M92 76 H108 L104 70 H96Z" fill="#c9a24f" />
+        <path d="M160 104 H180 L175.5 97 H164.5Z" fill="#c9a24f" />
       </g>
-      <path d="M8 79 H192" stroke="#c9a24f" strokeWidth="0.8" opacity="0.6" />
+      <path d="M6 107 H334" stroke="#c9a24f" strokeWidth="1" opacity="0.7" />
     </svg>
   )
 }
