@@ -2236,6 +2236,17 @@ html[data-lang='hi'] .opening .names {
 footer.site-footer {
   border-top: 0;
   background: var(--ivory-2);
+  padding: 28px 24px 36px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(19px, 2.4vw, 23px);
+  letter-spacing: 0;
+  line-height: 1.4;
+  color: var(--maroon);
+}
+html[data-lang='hi'] footer.site-footer {
+  font-style: normal;
+  font-size: 18px;
 }
 
 @media (prefers-reduced-motion: reduce) {

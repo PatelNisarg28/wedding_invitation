@@ -117,7 +117,7 @@ const en = {
     help: 'For any help, please call',
   },
   footer: {
-    made: 'Made with love for our family and friends',
+    made: 'Two souls, one heart — a lifetime of love begins.',
   },
 }
 
@@ -240,7 +240,7 @@ const hi: Dict = {
     help: 'किसी भी सहायता के लिए संपर्क करें',
   },
   footer: {
-    made: 'अपने परिवार और मित्रों के लिए प्रेम सहित',
+    made: 'दो आत्माएँ, एक हृदय — जीवन भर के प्रेम की शुरुआत।',
   },
 }
 

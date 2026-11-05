@@ -68,7 +68,7 @@ export default function App() {
             <Closing />
           </main>
           <div className="border-band" aria-hidden="true" />
-          <footer className="site-footer">{t.footer.made} · nisarg-weds-devanshi.site</footer>
+          <footer className="site-footer">{t.footer.made}</footer>
         </div>
       </MotionConfig>
     </LazyMotion>
