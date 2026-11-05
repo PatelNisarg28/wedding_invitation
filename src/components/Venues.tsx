@@ -14,7 +14,7 @@ function VenueCard({ v, index }: { v: Venue; index: number }) {
 
   return (
     <Reveal delay={index * 0.1} className="venue-card">
-      <div className="venue-map">
+      <div className={`venue-map${showMap ? ' is-open' : ''}`}>
         {showMap ? (
           <iframe title={t.venues.mapTitle(l(v.name))} src={embed} loading="lazy" referrerPolicy="no-referrer-when-downgrade" allowFullScreen />
         ) : (

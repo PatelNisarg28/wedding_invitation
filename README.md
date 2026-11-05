@@ -12,7 +12,7 @@ The bilingual (English / हिंदी) wedding invitation website for **https
 
 | What | File |
 | --- | --- |
-| All wedding facts (dates, times, venues, map links, phone numbers, photos) | `src/content/wedding.ts` |
+| All wedding facts (dates, times, venues, map links, phone numbers) | `src/content/wedding.ts` |
 | All English and Hindi text | `src/i18n/translations.ts` |
 | Colours, fonts, spacing | `src/styles/global.css` (`:root` variables) |
 | Page sections | `src/components/*.tsx` |
@@ -23,17 +23,6 @@ The bilingual (English / हिंदी) wedding invitation website for **https
 | www → apex redirect | `functions/_middleware.ts` |
 | Security headers, caching | `public/_headers` |
 | Social preview image / icons | `public/og-image.jpg`, `public/*.png`, `public/favicon.svg` |
-
-### Adding photographs later
-1. Put the images in `public/gallery/` (e.g. `01.jpg`). Resize to about 1600 px on the long side, JPEG quality ~80.
-2. List them in `src/content/wedding.ts`:
-   ```ts
-   export const gallery = [
-     { src: '/gallery/01.jpg', alt: 'Nisarg and Devanshi at the beach', ratio: '4/5' },
-     { src: '/gallery/02.jpg', alt: 'Engagement ceremony', ratio: '3/2' },
-   ]
-   ```
-3. Redeploy. While the list is empty, the section shows an elegant "coming soon" state.
 
 ---
 

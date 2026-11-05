@@ -42,6 +42,8 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  /* keep the layout still when the opening unlocks scrolling (desktop scrollbar) */
+  scrollbar-gutter: stable;
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--nav-h) + 8px);
   background: var(--ivory);
@@ -370,14 +372,26 @@ html[data-lang='hi'] .h2 {
   position: fixed;
   inset: 0;
   z-index: 60;
+  overflow: hidden;
+  /* plain ivory underneath: once the scene fades, the veil matches the hero exactly */
+  background: var(--ivory);
+}
+.opening-scene {
+  position: absolute;
+  inset: 0;
   display: grid;
   place-items: center;
-  overflow: hidden;
+  padding: 24px 20px;
   background:
     radial-gradient(120% 80% at 50% 0%, rgba(232, 220, 197, 0.55), transparent 60%),
     radial-gradient(90% 60% at 50% 110%, rgba(166, 173, 150, 0.28), transparent 70%),
     var(--ivory);
-  padding: 24px 20px;
+  will-change: opacity, transform;
+}
+.opening-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .opening-inner {
   position: relative;
@@ -1151,122 +1165,61 @@ html[data-lang='hi'] .venue-name {
   width: 100%;
 }
 
-/* ---------- gallery ---------- */
-.gallery-grid {
-  columns: 2 160px;
-  column-gap: 12px;
-}
-@media (min-width: 720px) {
-  .gallery-grid {
-    columns: 3 220px;
-    column-gap: 18px;
+/* phones: compact venue cards — a slim map strip and tighter text */
+@media (max-width: 719px) {
+  .venue-grid {
+    gap: 14px;
   }
-}
-.gallery-item {
-  break-inside: avoid;
-  margin-bottom: 12px;
-  border: 0;
-  padding: 0;
-  width: 100%;
-  cursor: zoom-in;
-  border-radius: 14px;
-  overflow: hidden;
-  background: var(--champagne-2);
-  display: block;
-}
-.gallery-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.8s var(--ease);
-}
-.gallery-item:hover img {
-  transform: scale(1.04);
-}
-.gallery-empty {
-  display: grid;
-  grid-template-columns: 1fr 1.25fr 1fr;
-  gap: clamp(10px, 3vw, 24px);
-  align-items: end;
-  max-width: 640px;
-  margin: 0 auto;
-}
-.frame {
-  position: relative;
-  aspect-ratio: 0.72;
-  border-radius: 999px 999px 14px 14px;
-  background: linear-gradient(170deg, var(--white), var(--champagne-2));
-  box-shadow: inset 0 0 0 1px rgba(184, 154, 99, 0.45), var(--shadow-soft);
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-}
-.frame.tall {
-  aspect-ratio: 0.66;
-}
-.frame::after {
-  content: '';
-  position: absolute;
-  inset: 8px;
-  border-radius: 999px 999px 10px 10px;
-  border: 1px solid rgba(184, 154, 99, 0.3);
-}
-.frame svg {
-  width: 56%;
-  color: var(--sage);
-  opacity: 0.85;
-}
-.gallery-note {
-  text-align: center;
-  margin-top: 28px;
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 21px;
-  color: var(--muted);
-}
-html[data-lang='hi'] .gallery-note {
-  font-style: normal;
-  font-size: 19px;
-}
-.lightbox {
-  position: fixed;
-  inset: 0;
-  z-index: 80;
-  background: rgba(30, 30, 26, 0.92);
-  display: grid;
-  place-items: center;
-  touch-action: pan-y;
-}
-.lightbox img {
-  max-width: 92vw;
-  max-height: 84svh;
-  border-radius: 10px;
-  object-fit: contain;
-}
-.lb-btn {
-  position: absolute;
-  border: 0;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: rgba(255, 253, 248, 0.12);
-  color: #fff;
-  cursor: pointer;
-  display: grid;
-  place-items: center;
-}
-.lb-btn svg {
-  width: 22px;
-}
-.lb-close { top: 16px; right: 16px; }
-.lb-prev { left: 12px; top: 50%; translate: 0 -50%; }
-.lb-next { right: 12px; top: 50%; translate: 0 -50%; }
-.lb-count {
-  position: absolute;
-  bottom: 18px;
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 13px;
-  letter-spacing: 0.2em;
+  .venue-card {
+    border-radius: 18px;
+  }
+  .venue-map {
+    aspect-ratio: auto;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .venue-map.is-open {
+    height: 220px;
+  }
+  .venue-map .pin {
+    position: static;
+    width: 22px;
+  }
+  .venue-map .load {
+    padding: 6px 14px;
+    font-size: 13px;
+    min-height: 36px;
+  }
+  .venue-body {
+    padding: 14px 16px 16px;
+  }
+  .venue-name {
+    font-size: 21px;
+  }
+  html[data-lang='hi'] .venue-name {
+    font-size: 19px;
+  }
+  .venue-addr {
+    margin-top: 4px;
+    font-size: 13.5px;
+    line-height: 1.45;
+  }
+  .venue-body .chips {
+    gap: 6px;
+    margin: 10px 0 14px;
+  }
+  .venue-body .chips li {
+    font-size: 12px;
+    padding: 3px 10px;
+  }
+  .venue-body .btn {
+    min-height: 44px;
+    padding-block: 8px;
+    font-size: 15px;
+  }
 }
 
 /* ---------- rsvp ---------- */

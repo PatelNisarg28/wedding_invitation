@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { Closing } from './components/Closing'
 import { Countdown } from './components/Countdown'
 import { Events } from './components/Events'
-import { Gallery } from './components/Gallery'
 import { Hero } from './components/Hero'
 import { Invitation } from './components/Invitation'
 import { Nav } from './components/Nav'
@@ -13,34 +12,37 @@ import { SaveTheDate } from './components/SaveTheDate'
 import { Venues } from './components/Venues'
 import { useLang } from './i18n/LanguageContext'
 
-const OPENED_KEY = 'nwd-opened'
-
-function alreadyOpened() {
-  try {
-    // deep links (e.g. /#rsvp shared on WhatsApp) skip the envelope
-    if (window.location.hash && window.location.hash !== '#top') return true
-    return sessionStorage.getItem(OPENED_KEY) === '1'
-  } catch {
-    return false
-  }
+/**
+ * Every visit — including a refresh — starts at the envelope, at the top of the page.
+ * A shared deep link (e.g. /#rsvp on WhatsApp) still opens the envelope first and then
+ * glides to that section; on a refresh the leftover #hash is ignored.
+ */
+function initialTarget(): string | null {
+  const hash = window.location.hash
+  const nav = performance.getEntriesByType?.('navigation')[0] as PerformanceNavigationTiming | undefined
+  if (hash) history.replaceState(null, '', window.location.pathname + window.location.search)
+  if (!hash || hash === '#top' || nav?.type === 'reload') return null
+  return hash.slice(1)
 }
+
+// read once per page load, before anything renders
+const TARGET = initialTarget()
 
 export default function App() {
   const { t } = useLang()
-  const [opened, setOpened] = useState(alreadyOpened)
+  const [opened, setOpened] = useState(false)
 
   useEffect(() => {
     document.body.classList.toggle('locked', !opened)
   }, [opened])
 
   const handleOpen = () => {
-    try {
-      sessionStorage.setItem(OPENED_KEY, '1')
-    } catch {
-      /* ignore */
-    }
-    window.scrollTo(0, 0)
+    window.scrollTo({ top: 0, behavior: 'instant' })
     setOpened(true)
+    if (TARGET) {
+      // let the veil dissolve first, then glide to the shared section
+      window.setTimeout(() => document.getElementById(TARGET)?.scrollIntoView({ behavior: 'smooth' }), 900)
+    }
   }
 
   return (
@@ -59,7 +61,6 @@ export default function App() {
             <SaveTheDate />
             <Events />
             <Venues />
-            <Gallery />
             <Rsvp />
             <Closing />
           </main>

@@ -76,15 +76,6 @@ const en = {
     mapTitle: (n: string) => `Map showing ${n}`,
     loadMap: 'Show map',
   },
-  gallery: {
-    eyebrow: 'Moments',
-    title: 'Our Story in Frames',
-    empty: 'Our favourite photographs will appear here soon.',
-    open: (i: number) => `Open photo ${i}`,
-    close: 'Close',
-    prev: 'Previous photo',
-    next: 'Next photo',
-  },
   rsvp: {
     eyebrow: 'Kindly respond',
     title: 'Will You Join Us?',
@@ -207,15 +198,6 @@ const hi: Dict = {
     getDirections: 'रास्ता देखें',
     mapTitle: (n: string) => `${n} का नक्शा`,
     loadMap: 'नक्शा दिखाएं',
-  },
-  gallery: {
-    eyebrow: 'यादें',
-    title: 'हमारी कहानी, तस्वीरों में',
-    empty: 'हमारी पसंदीदा तस्वीरें जल्द ही यहाँ होंगी।',
-    open: (i: number) => `तस्वीर ${i} खोलें`,
-    close: 'बंद करें',
-    prev: 'पिछली तस्वीर',
-    next: 'अगली तस्वीर',
   },
   rsvp: {
     eyebrow: 'कृपया उत्तर दें',
