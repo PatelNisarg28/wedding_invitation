@@ -2,7 +2,20 @@ import { AnimatePresence, m } from 'framer-motion'
 import { useMemo, useState } from 'react'
 import { events } from '../content/wedding'
 import { useLang } from '../i18n/LanguageContext'
-import { eventItem, googleUrl, icsPath, travelDate, travelItem, TRAVEL_LEADS, type TravelLead } from '../lib/calendar'
+import {
+  buildIcs,
+  calendarName,
+  customTravelDate,
+  eventItem,
+  googleUrl,
+  icsPath,
+  LAST_REMINDER_DAY,
+  travelDate,
+  travelItem,
+  travelItemAt,
+  TRAVEL_LEADS,
+  type TravelLead,
+} from '../lib/calendar'
 import { IconChevron } from './Ornaments'
 import { Reveal, SectionHead } from './Reveal'
 
@@ -27,10 +40,10 @@ function CalIcon({ kind }: { kind: 'apple' | 'google' }) {
   )
 }
 
-function CalButtons({ ics, google, platform }: { ics: string; google: string; platform: Platform }) {
+function CalButtons({ ics, google, platform, download }: { ics: string; google: string; platform: Platform; download?: string }) {
   const { t } = useLang()
   const apple = (
-    <a key="a" className={`btn cal-btn ${platform === 'ios' ? '' : 'ghost'}`} href={ics} type="text/calendar">
+    <a key="a" className={`btn cal-btn ${platform === 'ios' ? '' : 'ghost'}`} href={ics} type="text/calendar" download={download}>
       <CalIcon kind="apple" />
       <span>
         {t.calendar.apple}
@@ -57,7 +70,23 @@ export function SaveTheDate() {
 
   const now = Date.now()
   const leads = TRAVEL_LEADS.filter((d) => travelDate(d).getTime() > now)
-  const [lead, setLead] = useState<TravelLead | undefined>(leads[0])
+  // start on "1 month before" while it is still ahead, otherwise the soonest option left
+  const [lead, setLead] = useState<TravelLead | 'custom'>(leads.includes(30) ? 30 : (leads[0] ?? 'custom'))
+  const today = new Date(now + 330 * 60_000).toISOString().slice(0, 10)
+  const [customDay, setCustomDay] = useState(() => (leads[0] ? new Date(travelDate(leads[0]).getTime() + 330 * 60_000).toISOString().slice(0, 10) : today))
+  const [customTime, setCustomTime] = useState('10:00')
+  const showTravel = today <= LAST_REMINDER_DAY
+
+  // the reminder the buttons below will add
+  const remindAt = lead === 'custom' ? customTravelDate(customDay, customTime) : travelDate(lead)
+  const remindValid = !!remindAt && remindAt.getTime() > now
+  const travelIcs =
+    lead === 'custom'
+      ? remindValid
+        ? `data:text/calendar;charset=utf-8,${encodeURIComponent(buildIcs([travelItemAt(remindAt!, lang)], calendarName(lang)))}`
+        : ''
+      : `${BASE}${icsPath(`travel-${lead}d`, lang)}`
+  const travelGoogle = lead === 'custom' ? (remindValid ? googleUrl(travelItemAt(remindAt!, lang)) : '') : googleUrl(travelItem(lead, lang))
 
   const main = events.find((e) => e.highlight)!
 
@@ -101,21 +130,52 @@ export function SaveTheDate() {
             </AnimatePresence>
           </Reveal>
 
-          {lead && (
+          {showTravel && (
             <Reveal className="cal-card" delay={0.1}>
               <h3>{t.calendar.travelTitle}</h3>
               <p className="cal-sub">{t.calendar.travelSub}</p>
+              {/* one swipeable row of choices; "Custom" opens a date and time picker */}
               <div className="lead-chips" role="radiogroup" aria-label={t.calendar.travelTitle}>
                 {leads.map((d) => (
                   <button key={d} type="button" role="radio" aria-checked={lead === d} onClick={() => setLead(d)}>
                     {t.calendar.lead[d]}
                   </button>
                 ))}
+                <button type="button" role="radio" aria-checked={lead === 'custom'} onClick={() => setLead('custom')}>
+                  {t.calendar.custom}
+                </button>
               </div>
-              <p className="remind-on" aria-live="polite">
-                {t.calendar.remindOn(fmtDate(travelDate(lead).toISOString(), { year: true }))}
-              </p>
-              <CalButtons ics={`${BASE}${icsPath(`travel-${lead}d`, lang)}`} google={googleUrl(travelItem(lead, lang))} platform={platform} />
+              <AnimatePresence initial={false}>
+                {lead === 'custom' && (
+                  <m.div
+                    className="custom-when"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className="custom-fields">
+                      <label>
+                        <span>{t.calendar.customDate}</span>
+                        <input className="input" type="date" value={customDay} min={today} max={LAST_REMINDER_DAY} onChange={(e) => setCustomDay(e.target.value)} />
+                      </label>
+                      <label>
+                        <span>{t.calendar.customTime}</span>
+                        <input className="input" type="time" value={customTime} onChange={(e) => setCustomTime(e.target.value)} />
+                      </label>
+                    </div>
+                    <p className="custom-hint">{t.calendar.customHint}</p>
+                  </m.div>
+                )}
+              </AnimatePresence>
+              {remindValid && (
+                <>
+                  <p className="remind-on" aria-live="polite">
+                    {t.calendar.remindOn(fmtDate(remindAt!.toISOString(), { year: true }), fmtTime(remindAt!.toISOString()))}
+                  </p>
+                  <CalButtons ics={travelIcs} google={travelGoogle} platform={platform} download={lead === 'custom' ? 'travel-reminder.ics' : undefined} />
+                </>
+              )}
             </Reveal>
           )}
         </div>
