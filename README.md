@@ -18,7 +18,7 @@ The bilingual (English / हिंदी) wedding invitation website for **https
 | Ready-made RSVP messages | `src/i18n/translations.ts` → `rsvp.quick` |
 | Colours, fonts, spacing | `src/styles/global.css` (`:root` variables — maroon & gold theme) |
 | Illustrations (flowers, bells, pillars, elephants, diya) and falling petals | `src/components/Scenery.tsx` |
-| Page sections | `src/components/*.tsx` |
+| Page sections | `src/components/*.tsx` (travel reminder: `TravelReminder.tsx`, shown under the RSVP form to guests who accept) |
 | RSVP API | `functions/api/rsvp.ts` |
 | Admin API (list + CSV) | `functions/api/admin/rsvps.ts` |
 | Admin page | `admin.html`, `src/admin/` → served at `/admin` |

@@ -8,7 +8,6 @@ import { Invitation } from './components/Invitation'
 import { Nav } from './components/Nav'
 import { Opening } from './components/Opening'
 import { Rsvp } from './components/Rsvp'
-import { SaveTheDate } from './components/SaveTheDate'
 import { Venues } from './components/Venues'
 import { FallingPetals } from './components/Scenery'
 import { useLang } from './i18n/LanguageContext'
@@ -61,7 +60,6 @@ export default function App() {
             <div className="border-band" aria-hidden="true" />
             <Invitation />
             <Countdown />
-            <SaveTheDate />
             <Events />
             <Venues />
             <Rsvp />
