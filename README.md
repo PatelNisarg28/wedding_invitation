@@ -119,4 +119,4 @@ npm run deploy
 - Data lives in your Cloudflare D1 database; nothing is sent to third parties.
 
 ## Content notes
-All dates, times, venues, parents' names and phone numbers come from the printed Gujarati card. The Raas Garba / Dinner / Haldi venue and the wedding venue use the exact Google Maps pins from the card's QR codes; the residence link is a Google Maps search for the printed address.
+All dates, times, venues, parents' names and phone numbers come from the printed Gujarati card. The Sangeet Sandhya / Dinner / Haldi venue (Kadva Patidar Community Hall) and the wedding venue use the exact Google Maps pins from the card's QR codes; the residence link is a Google Maps search for the printed address.
