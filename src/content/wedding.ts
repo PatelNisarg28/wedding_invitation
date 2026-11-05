@@ -59,8 +59,8 @@ export const venues: Record<VenueId, Venue> = {
   samajWadi: {
     id: 'samajWadi',
     name: {
-      en: '52/22 Kadva Patidar Samaj ni Wadi',
-      hi: '52/22 कड़वा पाटीदार समाज की वाड़ी',
+      en: '52/22 Kadva Patidar Community Hall',
+      hi: '52/22 कड़वा पाटीदार समाज भवन',
     },
     address: {
       en: 'Behind Umiya Mata Temple, Bamroli, Surat, Gujarat',
@@ -104,7 +104,7 @@ export const events: WeddingEvent[] = [
   {
     id: 'garba',
     icon: 'garba',
-    name: { en: 'Raas Garba', hi: 'रास गरबा' },
+    name: { en: 'Sangeet Sandhya', hi: 'संगीत संध्या' },
     subtitle: { en: 'An evening of music & dance', hi: 'संगीत और नृत्य की शाम' },
     start: '2027-01-25T20:00:00+05:30',
     venueId: 'samajWadi',
