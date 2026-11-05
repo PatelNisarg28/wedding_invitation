@@ -326,7 +326,7 @@ type Faller = {
 let nextId = 0
 const rand = (a: number, b: number) => a + Math.random() * (b - a)
 
-/** A welcome shower across the top of the screen: all of it starts within ~3s and is gone by ~9s. */
+/** One shower across the screen: every petal starts within 1.5s and is gone by ~5s. */
 function shower(): Faller[] {
   const w = window.innerWidth
   const h = window.innerHeight
@@ -336,9 +336,9 @@ function shower(): Faller[] {
     x: rand(0.03, 0.97) * w,
     y: -30,
     fall: h + 60,
-    delay: rand(0, 3),
-    dur: rand(4.5, 6),
-    sway: rand(2.2, 3.6),
+    delay: rand(0, 1.5),
+    dur: rand(3.2, 3.6),
+    sway: rand(1.8, 2.8),
     drift: rand(18, 45),
     size: Math.round(rand(11, 19)),
     leaf: i % 4 === 3,
@@ -346,32 +346,14 @@ function shower(): Faller[] {
   }))
 }
 
-/** A small handful that tumbles down from wherever the guest touched. */
-function burst(cx: number, cy: number): Faller[] {
-  const h = window.innerHeight
-  return Array.from({ length: 7 }, (_, i) => {
-    const y = cy + rand(-24, 12)
-    return {
-      id: nextId++,
-      x: cx + rand(-40, 40),
-      y,
-      fall: h - y + 40,
-      delay: rand(0, 0.35),
-      dur: rand(2.6, 3.8),
-      sway: rand(1.6, 2.6),
-      drift: rand(14, 34),
-      size: Math.round(rand(11, 17)),
-      leaf: i % 4 === 3,
-      tone: i % 3,
-    }
-  })
-}
+const MAX_FALLERS = 40
 
-const MAX_FALLERS = 48
+/** Showers come in waves: about 5 seconds of falling petals, then about 10 seconds of calm. */
+const CYCLE_MS = 15000
 
 /**
- * Petals and leaves: one gentle shower when the invitation opens, then quiet.
- * After that, every tap or click on the page lets a few petals fall from that spot.
+ * Petals and leaves: a shower starts when the invitation opens and then returns
+ * every 15 seconds (paused while the tab is hidden).
  */
 export function FallingPetals() {
   const [items, setItems] = useState<Faller[]>([])
@@ -390,10 +372,11 @@ export function FallingPetals() {
       timers.add(t)
     }
     add(shower())
-    const onDown = (e: PointerEvent) => add(burst(e.clientX, e.clientY))
-    window.addEventListener('pointerdown', onDown, { passive: true })
+    const cycle = window.setInterval(() => {
+      if (document.visibilityState === 'visible') add(shower())
+    }, CYCLE_MS)
     return () => {
-      window.removeEventListener('pointerdown', onDown)
+      window.clearInterval(cycle)
       timers.forEach((t) => window.clearTimeout(t))
     }
   }, [])
