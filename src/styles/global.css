@@ -1741,14 +1741,14 @@ html[data-lang='hi'] .venue-name {
   padding: 3px;
 }
 .stepper button {
-  width: 40px;
-  height: 40px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   border: 0;
   background: var(--white);
   box-shadow: var(--shadow-soft);
   cursor: pointer;
-  font-size: 20px;
+  font-size: 18px;
   color: var(--maroon);
   display: grid;
   place-items: center;
@@ -1758,10 +1758,10 @@ html[data-lang='hi'] .venue-name {
   cursor: not-allowed;
 }
 .stepper output {
-  min-width: 46px;
+  min-width: 36px;
   text-align: center;
   font-family: var(--serif);
-  font-size: 25px;
+  font-size: 21px;
   color: var(--maroon);
   font-variant-numeric: tabular-nums lining-nums;
 }
@@ -2585,8 +2585,17 @@ html[data-lang='hi'] .family-note {
   line-height: 1.45;
   color: var(--muted);
 }
+/* one slim row: tick + question, with a short help line */
 .stay-check {
   margin-top: 0;
+  align-items: center;
+  padding: 7px 12px;
+}
+.stay-check b {
+  font-size: 15px;
+}
+.stay-check small {
+  font-size: 13px;
 }
 .couple-note .friend-from {
   margin-bottom: 8px;
