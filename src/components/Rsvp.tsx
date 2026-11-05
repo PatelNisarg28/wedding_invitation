@@ -186,7 +186,7 @@ export function Rsvp() {
     <section className="section rsvp-bg" id="rsvp" aria-labelledby="rsvp-title">
       <LeafShadow className="right" />
       <div className="narrow" style={{ maxWidth: 560 }}>
-        <SectionHead id="rsvp-title" eyebrow={t.rsvp.eyebrow} title={t.rsvp.title} lede={showSuccess ? undefined : t.rsvp.intro} />
+        <SectionHead id="rsvp-title" eyebrow={t.rsvp.eyebrow} title={t.rsvp.title} />
         <div className="rsvp-card">
           <AnimatePresence mode="wait" initial={false}>
             {showSuccess ? (

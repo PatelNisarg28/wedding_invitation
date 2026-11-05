@@ -81,7 +81,6 @@ const en = {
   rsvp: {
     eyebrow: 'Kindly respond',
     title: 'We’d love to celebrate with you!',
-    intro: 'It only takes a moment — no sign-up needed.',
     name: 'Full name',
     namePlaceholder: 'Your name',
     attending: 'Will you be joining us for our special day?',
@@ -245,7 +244,6 @@ const hi: Dict = {
   rsvp: {
     eyebrow: 'कृपया उत्तर दें',
     title: 'हम आपके साथ उत्सव मनाना चाहेंगे!',
-    intro: 'इसमें बस एक पल लगेगा — किसी पंजीकरण की आवश्यकता नहीं।',
     name: 'पूरा नाम',
     namePlaceholder: 'आपका नाम',
     attending: 'क्या आप हमारे इस विशेष दिन पर हमारे साथ होंगे?',
