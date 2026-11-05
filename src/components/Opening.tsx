@@ -1,6 +1,6 @@
 import { m, useReducedMotion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
-import { couple } from '../content/wedding'
+import { city, couple } from '../content/wedding'
 import { useLang } from '../i18n/LanguageContext'
 import { LanguageSwitch } from './LanguageSwitch'
 import { Bougainvillea } from './Scenery'
@@ -10,14 +10,18 @@ const SOFT = [0.65, 0, 0.35, 1] as const
 const OUT = [0.22, 1, 0.36, 1] as const
 
 /**
- * Timeline after "Open Invitation" (seconds):
- *  0.00  seal and button fade, heading drifts away
- *  0.25  flap folds open (1.0s)
- *  0.95  card rises out of the envelope (0.9s)
- *  1.85  the scene fades to plain ivory (0.6s)
- *  2.25  hand over to the page; the ivory veil dissolves over the hero
+ * Timeline after "Open Invitation" (seconds) — played like a short film:
+ *  0.0  seal, heading and button fade away
+ *  0.3  the flap folds open (1.0s)
+ *  1.1  the card rises out of the envelope (1.0s)
+ *  2.3  the envelope sinks away while the card glides to the centre and grows (1.1s)
+ *  3.4  the card holds so it can be read; a soft gold shine sweeps across it (1.0s)
+ *  4.4  the card's words fade and the plain card zooms towards the viewer, filling the screen (1.2s)…
+ *  4.9  …while the page takes over: the cream veil dissolves into the hero (no double image)
  */
-const T = { flap: 0.25, card: 0.95, fade: 1.85, done: 2250 }
+const T = { flap: 0.3, rise: 1.1, risen: 2.1, glide: 2.3, centred: 3.4, zoom: 4.4, end: 5.6, done: 4900 }
+const span = T.end - T.rise
+const at = (sec: number) => (sec - T.rise) / span
 
 /** Wait for the display fonts so the names never jump while fading in (capped at 1.2s). */
 function useFontsReady() {
@@ -41,7 +45,12 @@ export function Opening({ onOpen }: { onOpen: () => void }) {
   const fontsReady = useFontsReady()
   const [opening, setOpening] = useState(false)
   const [flapBehind, setFlapBehind] = useState(false)
+  const [cardOnTop, setCardOnTop] = useState(false)
+  // where the card travels: measured when the guest taps, so it lands centre-screen on any device
+  const [path, setPath] = useState({ rise: 0, dy: 0, scale: 1.5 })
   const btnRef = useRef<HTMLButtonElement>(null)
+  const envRef = useRef<HTMLDivElement>(null)
+  const cardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (fontsReady) btnRef.current?.focus({ preventScroll: true })
@@ -50,8 +59,26 @@ export function Opening({ onOpen }: { onOpen: () => void }) {
   const open = () => {
     if (opening) return
     if (reduce) return onOpen()
+    const env = envRef.current?.getBoundingClientRect()
+    const card = cardRef.current
+    if (env && card) {
+      const w = card.offsetWidth
+      const h = card.offsetHeight
+      setPath({
+        rise: -0.55 * h,
+        dy: window.innerHeight / 2 - (env.top + env.height / 2),
+        scale: Math.min(1.75, (window.innerWidth * 0.86) / w, (window.innerHeight * 0.5) / h),
+      })
+    }
     setOpening(true)
+    window.setTimeout(() => setCardOnTop(true), T.glide * 1000)
     window.setTimeout(onOpen, T.done)
+  }
+
+  // the envelope's own pieces sink and fade once the card is out
+  const sink = {
+    animate: opening ? { opacity: 0, y: 36 } : { opacity: 1, y: 0 },
+    transition: { duration: 0.9, ease: SOFT, delay: opening ? T.glide : 0 },
   }
 
   // entrance: each line settles in turn once the fonts are ready
@@ -68,13 +95,9 @@ export function Opening({ onOpen }: { onOpen: () => void }) {
       aria-modal="true"
       aria-labelledby="opening-names"
       initial={{ opacity: 1 }}
-      exit={{ opacity: 0, transition: { duration: reduce ? 0.2 : 0.9, ease: SOFT } }}
+      exit={{ opacity: 0, transition: { duration: reduce ? 0.2 : 1, ease: SOFT } }}
     >
-      <m.div
-        className="opening-scene"
-        animate={opening ? { opacity: 0, scale: 1.03 } : { opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6, ease: SOFT, delay: opening ? T.fade : 0 }}
-      >
+      <div className="opening-scene">
         <Bougainvillea className="opening-bloom left" />
         <Bougainvillea className="opening-bloom right" />
         <m.div className="opening-lang" {...enter(0)}>
@@ -101,27 +124,56 @@ export function Opening({ onOpen }: { onOpen: () => void }) {
           </m.div>
 
           <m.div {...enter(3)}>
-            <div className="envelope" onClick={open} aria-hidden="true">
-              <div className="env-back" />
+            <div className="envelope" ref={envRef} onClick={open} aria-hidden="true">
+              <m.div className="env-back" {...sink} />
               <m.div
-                className="env-card"
-                style={{ zIndex: 2 }}
-                animate={opening ? { y: '-46%' } : { y: 0 }}
-                transition={{ duration: 0.9, ease: SOFT, delay: T.card }}
+                ref={cardRef}
+                className={`env-card ${opening ? 'is-out' : ''}`}
+                style={{ zIndex: cardOnTop ? 6 : 2 }}
+                animate={
+                  opening
+                    ? {
+                        y: [0, path.rise, path.rise, path.dy, path.dy, path.dy],
+                        scale: [1, 1, 1, path.scale, path.scale, path.scale * 5],
+                        opacity: [1, 1, 1, 1, 1, 0],
+                      }
+                    : { y: 0, scale: 1, opacity: 1 }
+                }
+                transition={{
+                  duration: span,
+                  delay: T.rise,
+                  times: [0, at(T.risen), at(T.glide), at(T.centred), at(T.zoom), 1],
+                  // rise softly, pause, glide, hold, then accelerate into the zoom
+                  ease: [SOFT, 'linear', SOFT, 'linear', [0.55, 0, 0.9, 0.4]],
+                }}
               >
-                <div>
-                  <small>
-                    {l(couple.groom)} &amp; {l(couple.bride)}
-                  </small>
-                  26 · 01 · 2027
-                </div>
+                <m.div
+                  className="card-face"
+                  animate={opening ? { opacity: 0 } : { opacity: 1 }}
+                  transition={{ duration: 0.4, ease: SOFT, delay: opening ? T.zoom : 0 }}
+                >
+                  <span className="card-mono">
+                    N<i>&amp;</i>D
+                  </span>
+                  <span className="card-names">
+                    {l(couple.groom)} <i>&amp;</i> {l(couple.bride)}
+                  </span>
+                  <span className="card-rule" />
+                  <span className="card-date">26 · 01 · 2027</span>
+                  <span className="card-place">{l(city)}</span>
+                </m.div>
+                <span className="card-shine" />
               </m.div>
-              <div className="env-front" style={{ zIndex: 3 }} />
+              <m.div className="env-front" style={{ zIndex: 3 }} {...sink} />
               <m.div
                 className="env-flap"
                 style={{ zIndex: flapBehind ? 1 : 4 }}
-                animate={opening ? { rotateX: 180 } : { rotateX: 0 }}
-                transition={{ duration: 1, ease: SOFT, delay: T.flap }}
+                animate={opening ? { rotateX: 180, opacity: [1, 1, 0], y: [0, 0, 36] } : { rotateX: 0, opacity: 1, y: 0 }}
+                transition={{
+                  rotateX: { duration: 1, ease: SOFT, delay: T.flap },
+                  opacity: { duration: T.glide + 0.9 - T.flap, times: [0, (T.glide - T.flap) / (T.glide + 0.9 - T.flap), 1], ease: SOFT, delay: T.flap },
+                  y: { duration: T.glide + 0.9 - T.flap, times: [0, (T.glide - T.flap) / (T.glide + 0.9 - T.flap), 1], ease: SOFT, delay: T.flap },
+                }}
                 // tuck the flap behind the card the moment it passes upright
                 onUpdate={(v) => {
                   if (!flapBehind && Number(v.rotateX) > 90) setFlapBehind(true)
@@ -147,7 +199,7 @@ export function Opening({ onOpen }: { onOpen: () => void }) {
             </m.div>
           </m.div>
         </div>
-      </m.div>
+      </div>
     </m.div>
   )
 }
