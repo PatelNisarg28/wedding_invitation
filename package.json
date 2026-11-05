@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@fontsource/cormorant-garamond": "^5.3.0",
+    "@fontsource/eb-garamond": "^5.3.0",
     "@fontsource/manrope": "^5.3.0",
     "@fontsource/mukta": "^5.3.0",
     "@fontsource/tiro-devanagari-hindi": "^5.3.0",

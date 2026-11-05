@@ -3,11 +3,13 @@ import { contacts, couple } from '../content/wedding'
 import { useLang } from '../i18n/LanguageContext'
 import { FLOURISH_PATHS, IconPhone } from './Ornaments'
 import { Reveal } from './Reveal'
+import { LeafShadow } from './Scenery'
 
 export function Closing() {
   const { t, l } = useLang()
   return (
     <section className="section closing" aria-label={t.closing.line}>
+      <LeafShadow className="left" />
       <div className="narrow">
         <svg className="closing-mark" viewBox="0 0 220 60" fill="none" aria-hidden="true">
           {FLOURISH_PATHS.map((d, i) => (

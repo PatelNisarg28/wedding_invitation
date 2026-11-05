@@ -1,5 +1,6 @@
 import { m, type HTMLMotionProps } from 'framer-motion'
 import type { ReactNode } from 'react'
+import { TitleOrnament } from './Scenery'
 
 type Props = HTMLMotionProps<'div'> & { delay?: number; y?: number; children: ReactNode }
 
@@ -23,7 +24,9 @@ export function SectionHead({ eyebrow, title, lede, id }: { eyebrow: string; tit
     <Reveal className="section-head">
       <span className="eyebrow">{eyebrow}</span>
       <h2 className="h2" id={id}>
-        {title}
+        <TitleOrnament className="title-orn" />
+        <span>{title}</span>
+        <TitleOrnament className="title-orn flip" />
       </h2>
       {lede && <p className="lede">{lede}</p>}
     </Reveal>

@@ -2,11 +2,13 @@ import { couple } from '../content/wedding'
 import { useLang } from '../i18n/LanguageContext'
 import { Divider, Sprig } from './Ornaments'
 import { Reveal } from './Reveal'
+import { LeafShadow } from './Scenery'
 
 export function Invitation() {
   const { t, l } = useLang()
   return (
     <section className="section" id="invitation" aria-labelledby="invite-title">
+      <LeafShadow className="left" />
       <div className="narrow">
         <Reveal className="invite-card">
           <Sprig className="card-sprig" style={{ left: -38, top: -44, transform: 'rotate(100deg) scaleX(-1)' }} />

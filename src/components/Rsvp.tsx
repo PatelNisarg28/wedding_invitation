@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { useLang } from '../i18n/LanguageContext'
 import { IconAlert, IconHeart, IconLeaf } from './Ornaments'
 import { SectionHead } from './Reveal'
+import { LeafShadow } from './Scenery'
 
 type Attending = 'yes' | 'no'
 interface Saved {
@@ -161,6 +162,7 @@ export function Rsvp() {
 
   return (
     <section className="section rsvp-bg" id="rsvp" aria-labelledby="rsvp-title">
+      <LeafShadow className="right" />
       <div className="narrow" style={{ maxWidth: 560 }}>
         <SectionHead id="rsvp-title" eyebrow={t.rsvp.eyebrow} title={t.rsvp.title} lede={showSuccess ? undefined : t.rsvp.intro} />
         <div className="rsvp-card">

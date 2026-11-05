@@ -57,7 +57,7 @@ export function Sprig(props: P) {
           />
         ))}
       </g>
-      <g fill="#B89A63">
+      <g fill="#b02447">
         <circle cx={SPRIG.tip[0] + 3} cy={SPRIG.tip[1] - 3} r="3.2" />
         <circle cx={SPRIG.tip[0] - 6} cy={SPRIG.tip[1] - 9} r="1.8" />
         <circle cx={SPRIG.bud[0]} cy={SPRIG.bud[1]} r="2.6" />
