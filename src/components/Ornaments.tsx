@@ -249,9 +249,6 @@ export const IconLeaf = (p: P) => (
 export const IconAlert = (p: P) => (
   <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" {...p}><g {...ui}><circle cx="12" cy="12" r="9" /><path d="M12 7.5v5.5M12 16.5v.01" /></g></svg>
 )
-export const IconClose = (p: P) => (
-  <svg viewBox="0 0 24 24" aria-hidden="true" {...p}><g {...ui}><path d="M6 6l12 12M18 6 6 18" /></g></svg>
-)
 export const IconChevron = ({ dir = 'right', ...p }: P & { dir?: 'left' | 'right' }) => (
   <svg viewBox="0 0 24 24" aria-hidden="true" {...p}><g {...ui}><path d={dir === 'right' ? 'M9 5l7 7-7 7' : 'M15 5l-7 7 7 7'} /></g></svg>
 )

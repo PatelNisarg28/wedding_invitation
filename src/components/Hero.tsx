@@ -17,7 +17,7 @@ export function Hero({ ready }: { ready: boolean }) {
   const item = (i: number) => ({
     initial: { opacity: 0, y: 16 },
     animate: ready ? { opacity: 1, y: 0 } : {},
-    transition: { duration: 1, ease: EASE, delay: 0.15 + i * 0.12 },
+    transition: { duration: 1.1, ease: EASE, delay: 0.35 + i * 0.14 },
   })
 
   return (
@@ -34,7 +34,7 @@ export function Hero({ ready }: { ready: boolean }) {
           style={{ position: 'absolute', inset: 0 }}
           initial={{ opacity: 0, scale: 0.97 }}
           animate={ready ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 1.2, ease: EASE }}
+          transition={{ duration: 1.4, ease: EASE, delay: 0.2 }}
         >
           <Arch />
           <Finial style={{ position: 'absolute', width: 34, left: '50%', top: -26, translate: '-50% 0', color: 'var(--gold)' }} />

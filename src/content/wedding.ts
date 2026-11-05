@@ -142,10 +142,3 @@ export const contacts = [
   { phone: '+919328259776', display: '+91 93282 59776' },
   { phone: '+919668911235', display: '+91 96689 11235' },
 ]
-
-/**
- * Gallery — add your photographs to /public/gallery and list them here.
- * Example: { src: '/gallery/01.jpg', alt: 'Nisarg and Devanshi at …', ratio: '4/5' }
- * The section shows an elegant "coming soon" state while this list is empty.
- */
-export const gallery: { src: string; alt: string; ratio?: '4/5' | '1/1' | '3/2' | '2/3' }[] = []
