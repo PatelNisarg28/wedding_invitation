@@ -1919,16 +1919,24 @@ html[data-lang='hi'] .cal-card h3 {
   color: var(--muted);
   font-size: 15px;
 }
+/* Google and Apple side by side on one line */
 .cal-buttons {
   display: grid;
-  gap: 10px;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
 }
 .cal-btn {
-  justify-content: flex-start;
-  min-height: 56px;
-  padding: 8px 20px;
+  justify-content: center;
+  gap: 8px;
+  min-height: 60px;
+  min-width: 0;
+  padding: 8px 12px 8px 14px;
   text-align: left;
   font-size: 15px;
+  border-radius: 18px;
+}
+.cal-btn svg {
+  flex: none;
 }
 .cal-btn span {
   display: flex;
