@@ -1,4 +1,4 @@
-import { json, sha256, type Env } from '../_lib'
+import { ensureStayColumn, json, sha256, type Env } from '../_lib'
 
 const MAX_BODY = 4_000
 const RATE_WINDOW_MIN = 10
@@ -9,6 +9,7 @@ interface Payload {
   name?: unknown
   attending?: unknown
   guests?: unknown
+  needsStay?: unknown
   message?: unknown
   lang?: unknown
   website?: unknown
@@ -53,6 +54,9 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     if (!Number.isInteger(guests) || guests < 1 || guests > 10) errors.guests = 'invalid'
   } else guests = 0
 
+  // only meaningful for guests who are coming
+  const needsStay = attending === 1 && body.needsStay === true ? 1 : 0
+
   const message = typeof body.message === 'string' ? clean(body.message) : ''
   if (message.length > 500) errors.message = 'invalid'
 
@@ -73,14 +77,17 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       .first<{ n: number }>()
     if ((recent?.n ?? 0) >= RATE_MAX) return json({ ok: false, error: 'rate_limited' }, 429, { 'Retry-After': '60' })
 
+    await ensureStayColumn(env.DB)
+
     // Upsert keyed by device: repeat taps / resubmits update the same response instead of duplicating it
     await env.DB.prepare(
-      `INSERT INTO rsvps (device_id, name, attending, guests, message, lang, ip_hash, user_agent, revision, created_at, updated_at)
-       VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, 1, ?9, ?9)
+      `INSERT INTO rsvps (device_id, name, attending, guests, message, lang, ip_hash, user_agent, revision, created_at, updated_at, needs_stay)
+       VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, 1, ?9, ?9, ?10)
        ON CONFLICT(device_id) DO UPDATE SET
          name = excluded.name,
          attending = excluded.attending,
          guests = excluded.guests,
+         needs_stay = excluded.needs_stay,
          message = CASE WHEN excluded.message <> '' THEN excluded.message ELSE rsvps.message END,
          lang = excluded.lang,
          ip_hash = excluded.ip_hash,
@@ -88,10 +95,10 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
          revision = rsvps.revision + 1,
          updated_at = excluded.updated_at`,
     )
-      .bind(deviceId, name, attending, guests, message, lang, ipHash, ua, now)
+      .bind(deviceId, name, attending, guests, message, lang, ipHash, ua, now, needsStay)
       .run()
 
-    return json({ ok: true, response: { name, attending: attending === 1 ? 'yes' : 'no', guests } })
+    return json({ ok: true, response: { name, attending: attending === 1 ? 'yes' : 'no', guests, needsStay: needsStay === 1 } })
   } catch (err) {
     console.error('rsvp insert failed', err)
     return json({ ok: false, error: 'server' }, 500)

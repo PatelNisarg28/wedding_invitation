@@ -11,6 +11,7 @@ interface Saved {
   name: string
   attending: Attending
   guests: number
+  needsStay?: boolean
 }
 type ErrKey = 'nameRequired' | 'nameShort' | 'attendingRequired' | 'guestsRange' | 'messageLong' | 'reasonRequired'
 type FormErrKey = 'network' | 'server' | 'rate'
@@ -57,6 +58,7 @@ export function Rsvp() {
   const [name, setName] = useState(saved?.name ?? '')
   const [attending, setAttending] = useState<Attending | null>(saved?.attending ?? null)
   const [guests, setGuests] = useState(saved?.guests && saved.guests > 0 ? saved.guests : 1)
+  const [needsStay, setNeedsStay] = useState(saved?.needsStay ?? false)
   const [message, setMessage] = useState('')
   const [hp, setHp] = useState('')
   const [reasonOk, setReasonOk] = useState(false)
@@ -134,7 +136,7 @@ export function Rsvp() {
       if (IS_PREVIEW) {
         // Hosted design preview has no backend: show the flow, but say clearly that nothing was saved.
         await new Promise((r) => window.setTimeout(r, 700))
-        const s: Saved = { name: name.trim(), attending: attending!, guests: attending === 'yes' ? guests : 0 }
+        const s: Saved = { name: name.trim(), attending: attending!, guests: attending === 'yes' ? guests : 0, needsStay: attending === 'yes' && needsStay }
         justSubmitted.current = true
         setSaved(s)
         setEditing(false)
@@ -148,6 +150,7 @@ export function Rsvp() {
           name: name.trim(),
           attending,
           guests: attending === 'yes' ? guests : 0,
+          needsStay: attending === 'yes' && needsStay,
           message: message.trim(),
           lang,
           website: hp,
@@ -157,7 +160,7 @@ export function Rsvp() {
       if (res.status === 429) throw new Error('rate')
       const data = (await res.json().catch(() => null)) as { ok?: boolean } | null
       if (!res.ok || !data?.ok) throw new Error(res.status >= 500 ? 'server' : 'server')
-      const s: Saved = { name: name.trim(), attending: attending!, guests: attending === 'yes' ? guests : 0 }
+      const s: Saved = { name: name.trim(), attending: attending!, guests: attending === 'yes' ? guests : 0, needsStay: attending === 'yes' && needsStay }
       try {
         if (!IS_PREVIEW) storage()?.setItem(SAVED_KEY, JSON.stringify(s))
       } catch {
@@ -213,7 +216,12 @@ export function Rsvp() {
                   {saved.attending === 'yes' ? t.rsvp.successAcceptTitle(firstName) : t.rsvp.successDeclineTitle(firstName)}
                 </h3>
                 <p>{saved.attending === 'yes' ? t.rsvp.successAccept : t.rsvp.successDecline}</p>
-                {saved.attending === 'yes' && <div className="summary">{t.rsvp.guestsCount(saved.guests)}</div>}
+                {saved.attending === 'yes' && (
+                  <div className="summary">
+                    {t.rsvp.guestsCount(saved.guests)}
+                    {saved.needsStay && ` · ${t.rsvp.staySummary}`}
+                  </div>
+                )}
                 {IS_PREVIEW && <p className="preview-note">Design preview · this response was not saved</p>}
                 <div>
                   <button type="button" className="btn ghost small" onClick={() => setEditing(true)}>
@@ -389,6 +397,13 @@ export function Rsvp() {
                           </div>
                           <span className="help">{t.rsvp.guestsHelp}</span>
                         </div>
+                        <label className="stay-check">
+                          <input type="checkbox" checked={needsStay} onChange={(e) => setNeedsStay(e.target.checked)} />
+                          <span>
+                            <b>{t.rsvp.stay}</b>
+                            <small>{t.rsvp.stayHelp}</small>
+                          </span>
+                        </label>
                         {errors.guests && (
                           <p className="error">
                             <IconAlert /> {t.rsvp.errors[errors.guests]}

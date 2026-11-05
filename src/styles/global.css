@@ -2472,3 +2472,43 @@ html[data-lang='hi'] .friend-hello {
 .friend-note .error {
   justify-content: center;
 }
+
+/* ---------- RSVP: stay needed ---------- */
+.stay-check {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--ivory);
+  box-shadow: inset 0 0 0 1px rgba(184, 137, 62, 0.45);
+  cursor: pointer;
+  transition: box-shadow 0.25s var(--ease), background 0.25s var(--ease);
+}
+.stay-check:has(input:checked) {
+  background: rgba(176, 36, 71, 0.06);
+  box-shadow: inset 0 0 0 1.5px var(--maroon);
+}
+.stay-check input {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin: 2px 0 0;
+  accent-color: var(--maroon);
+}
+.stay-check span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.stay-check b {
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--charcoal);
+}
+.stay-check small {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--muted);
+}
