@@ -1927,13 +1927,19 @@ html[data-lang='hi'] .cal-card h3 {
 }
 .cal-btn {
   justify-content: center;
-  gap: 8px;
-  min-height: 60px;
+  gap: 6px;
+  min-height: 46px;
   min-width: 0;
-  padding: 8px 12px 8px 14px;
+  padding: 6px 8px;
   text-align: left;
-  font-size: 15px;
-  border-radius: 18px;
+  font-size: 14.5px;
+  letter-spacing: 0;
+  line-height: 1.15;
+  border-radius: 999px;
+}
+.cal-btn svg {
+  width: 18px;
+  height: 18px;
 }
 .cal-btn svg {
   flex: none;
@@ -1942,12 +1948,6 @@ html[data-lang='hi'] .cal-card h3 {
   display: flex;
   flex-direction: column;
   line-height: 1.25;
-}
-.cal-btn small {
-  font-weight: 500;
-  font-size: 11.5px;
-  letter-spacing: 0.04em;
-  opacity: 0.75;
 }
 .cal-more {
   appearance: none;

@@ -45,19 +45,13 @@ function CalButtons({ ics, google, platform, download }: { ics: string; google: 
   const apple = (
     <a key="a" className={`btn cal-btn ${platform === 'ios' ? '' : 'ghost'}`} href={ics} type="text/calendar" download={download}>
       <CalIcon kind="apple" />
-      <span>
-        {t.calendar.apple}
-        {platform === 'ios' && <small>{t.calendar.iosHint}</small>}
-      </span>
+      <span>{t.calendar.apple}</span>
     </a>
   )
   const g = (
     <a key="g" className={`btn cal-btn ${platform === 'ios' ? 'ghost' : ''}`} href={google} target="_blank" rel="noopener noreferrer">
       <CalIcon kind="google" />
-      <span>
-        {t.calendar.google}
-        {platform === 'android' && <small>{t.calendar.androidHint}</small>}
-      </span>
+      <span>{t.calendar.google}</span>
     </a>
   )
   return <div className="cal-buttons">{platform === 'ios' ? [apple, g] : [g, apple]}</div>
