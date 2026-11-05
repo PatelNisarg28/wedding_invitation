@@ -2512,3 +2512,64 @@ html[data-lang='hi'] .friend-hello {
   line-height: 1.4;
   color: var(--muted);
 }
+
+/* ---------- RSVP: answer line, the couple's note, help text ---------- */
+.choice-line {
+  margin: 12px 2px 0;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 18.5px;
+  line-height: 1.45;
+  color: var(--maroon);
+  text-align: center;
+}
+html[data-lang='hi'] .choice-line {
+  font-style: normal;
+  font-size: 17px;
+  line-height: 1.6;
+}
+.field-help {
+  margin: -4px 0 12px;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+.stay-check {
+  margin-top: 0;
+}
+.couple-note .friend-from {
+  margin-bottom: 8px;
+}
+.couple-note .friend-body + .friend-body {
+  margin-top: 10px;
+}
+.friend-seal.pair {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  font-size: 15px;
+  border-radius: 999px;
+}
+.friend-seal.pair span {
+  font-size: 11px;
+  margin: 0 1px;
+  opacity: 0.85;
+}
+.note-sign {
+  margin-top: 12px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 20px;
+  line-height: 1.25;
+  color: var(--maroon);
+}
+.note-sign span {
+  display: block;
+  font-size: 16px;
+  color: var(--gold-deep);
+}
+html[data-lang='hi'] .note-sign {
+  font-style: normal;
+  font-size: 18px;
+}
