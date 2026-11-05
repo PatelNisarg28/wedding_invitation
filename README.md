@@ -14,7 +14,8 @@ The bilingual (English / हिंदी) wedding invitation website for **https
 | --- | --- |
 | All wedding facts (dates, times, venues, map links, phone numbers) | `src/content/wedding.ts` |
 | All English and Hindi text | `src/i18n/translations.ts` |
-| Colours, fonts, spacing | `src/styles/global.css` (`:root` variables) |
+| Colours, fonts, spacing | `src/styles/global.css` (`:root` variables — maroon & gold theme) |
+| Illustrations (flowers, bells, pillars, elephants, diya) and falling petals | `src/components/Scenery.tsx` |
 | Page sections | `src/components/*.tsx` |
 | RSVP API | `functions/api/rsvp.ts` |
 | Admin API (list + CSV) | `functions/api/admin/rsvps.ts` |

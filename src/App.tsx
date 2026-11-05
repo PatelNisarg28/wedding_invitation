@@ -10,6 +10,7 @@ import { Opening } from './components/Opening'
 import { Rsvp } from './components/Rsvp'
 import { SaveTheDate } from './components/SaveTheDate'
 import { Venues } from './components/Venues'
+import { FallingPetals } from './components/Scenery'
 import { useLang } from './i18n/LanguageContext'
 
 /**
@@ -54,8 +55,10 @@ export default function App() {
         <AnimatePresence>{!opened && <Opening key="opening" onOpen={handleOpen} />}</AnimatePresence>
         <div inert={!opened}>
           <Nav />
+          {opened && <FallingPetals />}
           <main id="main">
             <Hero ready={opened} />
+            <div className="border-band" aria-hidden="true" />
             <Invitation />
             <Countdown />
             <SaveTheDate />
@@ -64,6 +67,7 @@ export default function App() {
             <Rsvp />
             <Closing />
           </main>
+          <div className="border-band" aria-hidden="true" />
           <footer className="site-footer">{t.footer.made} · nisarg-weds-devanshi.site</footer>
         </div>
       </MotionConfig>

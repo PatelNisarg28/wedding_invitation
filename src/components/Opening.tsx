@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { couple } from '../content/wedding'
 import { useLang } from '../i18n/LanguageContext'
 import { LanguageSwitch } from './LanguageSwitch'
-import { Sprig } from './Ornaments'
+import { Bougainvillea } from './Scenery'
 
 /** Soft in-out curve: nothing starts or stops abruptly. */
 const SOFT = [0.65, 0, 0.35, 1] as const
@@ -75,8 +75,8 @@ export function Opening({ onOpen }: { onOpen: () => void }) {
         animate={opening ? { opacity: 0, scale: 1.03 } : { opacity: 1, scale: 1 }}
         transition={{ duration: 0.6, ease: SOFT, delay: opening ? T.fade : 0 }}
       >
-        <Sprig className="opening-sprig" style={{ left: -30, top: -20, transform: 'rotate(90deg) scaleX(-1)' }} />
-        <Sprig className="opening-sprig" style={{ right: -30, bottom: -30, transform: 'rotate(-90deg) scaleX(-1)' }} />
+        <Bougainvillea className="opening-bloom left" />
+        <Bougainvillea className="opening-bloom right" />
         <m.div className="opening-lang" {...enter(0)}>
           <LanguageSwitch />
         </m.div>

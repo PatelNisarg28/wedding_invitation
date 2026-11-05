@@ -3,6 +3,7 @@ import { events, venues, type Venue } from '../content/wedding'
 import { useLang } from '../i18n/LanguageContext'
 import { IconNavigate, IconPin } from './Ornaments'
 import { Reveal, SectionHead } from './Reveal'
+import { LeafShadow } from './Scenery'
 
 const ORDER: Venue['id'][] = ['somiba', 'samajWadi', 'residence']
 
@@ -47,6 +48,7 @@ export function Venues() {
   const { t } = useLang()
   return (
     <section className="section venues-bg" id="venues" aria-labelledby="venues-title">
+      <LeafShadow className="left" />
       <div className="container">
         <SectionHead id="venues-title" eyebrow={t.venues.eyebrow} title={t.venues.title} />
         <div className="venue-grid">

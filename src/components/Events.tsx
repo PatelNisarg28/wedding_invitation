@@ -2,6 +2,7 @@ import { events, TIME_ZONE, venues, type WeddingEvent } from '../content/wedding
 import { useLang } from '../i18n/LanguageContext'
 import { EventGlyph, IconArrow, IconClock, IconPin } from './Ornaments'
 import { Reveal, SectionHead } from './Reveal'
+import { LeafShadow } from './Scenery'
 
 const dayKey = (iso: string) => new Intl.DateTimeFormat('en-CA', { timeZone: TIME_ZONE }).format(new Date(iso))
 const dayNum = (iso: string) => new Intl.DateTimeFormat('en-IN', { timeZone: TIME_ZONE, day: 'numeric' }).format(new Date(iso))
@@ -56,6 +57,7 @@ export function Events() {
 
   return (
     <section className="section" id="celebrations" aria-labelledby="celebrations-title">
+      <LeafShadow className="right" />
       <div className="container">
         <SectionHead id="celebrations-title" eyebrow={t.events.eyebrow} title={t.events.title} lede={t.events.intro} />
         {[...days.entries()].map(([k, list]) => (
