@@ -1668,17 +1668,17 @@ html[data-lang='hi'] .venue-name {
   border-radius: 999px;
   background: var(--ivory);
   box-shadow: inset 0 0 0 1px rgba(184, 137, 62, 0.45);
-  padding: 4px;
+  padding: 3px;
 }
 .stepper button {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   border: 0;
   background: var(--white);
   box-shadow: var(--shadow-soft);
   cursor: pointer;
-  font-size: 22px;
+  font-size: 20px;
   color: var(--maroon);
   display: grid;
   place-items: center;
@@ -1688,10 +1688,10 @@ html[data-lang='hi'] .venue-name {
   cursor: not-allowed;
 }
 .stepper output {
-  min-width: 64px;
+  min-width: 46px;
   text-align: center;
   font-family: var(--serif);
-  font-size: 30px;
+  font-size: 25px;
   color: var(--maroon);
   font-variant-numeric: tabular-nums lining-nums;
 }
@@ -2448,11 +2448,11 @@ html[data-lang='hi'] .friend-from {
 /* ---------- RSVP: stay needed ---------- */
 .stay-check {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   align-items: flex-start;
   margin-top: 16px;
-  padding: 12px 14px;
-  border-radius: 14px;
+  padding: 9px 12px;
+  border-radius: 12px;
   background: var(--ivory);
   box-shadow: inset 0 0 0 1px rgba(184, 137, 62, 0.45);
   cursor: pointer;
@@ -2464,25 +2464,48 @@ html[data-lang='hi'] .friend-from {
 }
 .stay-check input {
   flex: none;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   margin: 2px 0 0;
   accent-color: var(--maroon);
 }
 .stay-check span {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
 }
 .stay-check b {
-  font-weight: 600;
-  font-size: 16px;
+  font-weight: 500;
+  font-size: 15.5px;
+  line-height: 1.3;
   color: var(--charcoal);
 }
 .stay-check small {
-  font-size: 14px;
-  line-height: 1.4;
+  font-size: 13.5px;
+  line-height: 1.35;
   color: var(--muted);
+}
+/* a warm nudge to bring the whole family */
+.family-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 12px 0 0;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 18px;
+  line-height: 1.35;
+  color: var(--maroon);
+}
+.family-note svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 4px;
+}
+html[data-lang='hi'] .family-note {
+  font-style: normal;
+  font-size: 16.5px;
 }
 
 /* ---------- RSVP: answer line, the couple's note, help text ---------- */
