@@ -2628,7 +2628,8 @@ html[data-lang='hi'] .note-sign {
 /* ---------- countdown: ceremony details and the palace skyline ---------- */
 .countdown-band {
   position: relative;
-  padding-bottom: calc(var(--section-pad) + clamp(110px, 16vw, 190px));
+  /* room for the palace drawing plus a small gap above it */
+  padding-bottom: calc(clamp(120px, 17vw, 210px) + clamp(24px, 4vw, 44px));
 }
 .cd-details {
   margin-top: 30px;
@@ -2671,14 +2672,9 @@ html[data-lang='hi'] .note-sign {
   align-items: center;
   gap: 12px;
 }
-/* phones: "Wedding Ceremony" on its own line, then "date · time", then the venue */
+/* phones: a dot instead of the bar between date and time */
 @media (max-width: 520px) {
-  .cd-line > .sep {
-    display: none;
-  }
   .cd-line .when {
-    flex-basis: 100%;
-    justify-content: center;
     gap: 8px;
   }
   .cd-line .when .sep {

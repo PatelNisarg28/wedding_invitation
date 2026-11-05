@@ -94,8 +94,6 @@ export function Countdown() {
               <Divider className="cd-divider" />
               <p className="cd-line">
                 <IconCalendar />
-                <span>{l(main.name)}</span>
-                <i className="sep" aria-hidden="true" />
                 <span className="when">
                   {fmtDate(main.start, { year: true })}
                   <i className="sep" aria-hidden="true" />
