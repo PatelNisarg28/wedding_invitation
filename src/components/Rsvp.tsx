@@ -1,6 +1,7 @@
 import { AnimatePresence, m } from 'framer-motion'
-import { useEffect, useRef, useState, type FormEvent } from 'react'
+import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
 import { useLang } from '../i18n/LanguageContext'
+import { matchFriend } from '../lib/friends'
 import { IconAlert, IconHeart, IconLeaf } from './Ornaments'
 import { SectionHead } from './Reveal'
 import { LeafShadow } from './Scenery'
@@ -11,7 +12,7 @@ interface Saved {
   attending: Attending
   guests: number
 }
-type ErrKey = 'nameRequired' | 'nameShort' | 'attendingRequired' | 'guestsRange' | 'messageLong'
+type ErrKey = 'nameRequired' | 'nameShort' | 'attendingRequired' | 'guestsRange' | 'messageLong' | 'reasonRequired'
 type FormErrKey = 'network' | 'server' | 'rate'
 
 const MAX_GUESTS = 10
@@ -58,7 +59,8 @@ export function Rsvp() {
   const [guests, setGuests] = useState(saved?.guests && saved.guests > 0 ? saved.guests : 1)
   const [message, setMessage] = useState('')
   const [hp, setHp] = useState('')
-  const [errors, setErrors] = useState<Partial<Record<'name' | 'attending' | 'guests' | 'message', ErrKey>>>({})
+  const [reasonOk, setReasonOk] = useState(false)
+  const [errors, setErrors] = useState<Partial<Record<'name' | 'attending' | 'guests' | 'message' | 'reason', ErrKey>>>({})
   const [formError, setFormError] = useState<FormErrKey | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const inFlight = useRef(false)
@@ -66,6 +68,21 @@ export function Rsvp() {
   const successRef = useRef<HTMLHeadingElement>(null)
   const nameRef = useRef<HTMLInputElement>(null)
   const attendRef = useRef<HTMLInputElement>(null)
+  const reasonRef = useRef<HTMLInputElement>(null)
+
+  // a close friend Nisarg has asked to be there (fuzzy match on the typed name)
+  const friend = useMemo(() => matchFriend(name), [name])
+  const needsReason = !!friend && attending === 'no'
+  const quick = [...t.rsvp.quick.common.slice(0, 1), attending === 'no' ? t.rsvp.quick.no : t.rsvp.quick.yes, ...t.rsvp.quick.common.slice(1)]
+
+  /** Change the answer; a picked "see you there" note follows it (decline swaps it for the "from afar" one). */
+  const answer = (next: Attending) => {
+    const { yes, no } = t.rsvp.quick
+    setAttending(next)
+    setMessage((cur) => (next === 'no' && cur === yes ? no : next === 'yes' && cur === no ? yes : cur))
+    if (next === 'yes') setReasonOk(false)
+    setErrors((x) => ({ ...x, attending: undefined, reason: undefined, ...(next === 'no' ? { guests: undefined } : {}) }))
+  }
 
   useEffect(() => {
     deviceRef.current = deviceId()
@@ -93,6 +110,7 @@ export function Rsvp() {
     if (!attending) e.attending = 'attendingRequired'
     if (attending === 'yes' && (guests < 1 || guests > MAX_GUESTS)) e.guests = 'guestsRange'
     if (message.length > 500) e.message = 'messageLong'
+    if (needsReason && !reasonOk) e.reason = 'reasonRequired'
     return e
   }
 
@@ -105,6 +123,7 @@ export function Rsvp() {
     if (Object.keys(e).length) {
       if (e.name) nameRef.current?.focus()
       else if (e.attending) attendRef.current?.focus()
+      else if (e.reason) reasonRef.current?.focus()
       return
     }
     inFlight.current = true
@@ -256,10 +275,7 @@ export function Rsvp() {
                         name="attending"
                         value="yes"
                         checked={attending === 'yes'}
-                        onChange={() => {
-                          setAttending('yes')
-                          setErrors((x) => ({ ...x, attending: undefined }))
-                        }}
+                        onChange={() => answer('yes')}
                       />
                       <label htmlFor="att-yes">
                         <IconHeart />
@@ -273,10 +289,7 @@ export function Rsvp() {
                         name="attending"
                         value="no"
                         checked={attending === 'no'}
-                        onChange={() => {
-                          setAttending('no')
-                          setErrors((x) => ({ ...x, attending: undefined, guests: undefined }))
-                        }}
+                        onChange={() => answer('no')}
                       />
                       <label htmlFor="att-no">
                         <IconLeaf />
@@ -290,6 +303,65 @@ export function Rsvp() {
                     </p>
                   )}
                 </div>
+
+                <AnimatePresence initial={false}>
+                  {friend && (
+                    <m.div
+                      key="friend"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.45, ease: EASE }}
+                      style={{ overflow: 'hidden' }}
+                    >
+                      <div className={`friend-note ${needsReason ? 'think' : ''}`} role="note" aria-live="polite">
+                        <div className="friend-seal" aria-hidden="true">
+                          N
+                        </div>
+                        <div className="friend-from">{t.rsvp.friend.from}</div>
+                        {needsReason ? (
+                          <>
+                            <p className="friend-hello">{t.rsvp.friend.thinkTitle(friend.name)}</p>
+                            <p className="friend-body">{t.rsvp.friend.thinkBody}</p>
+                            <div className="friend-sign">{t.rsvp.friend.sign}</div>
+                            <button
+                              type="button"
+                              className="btn small friend-come"
+                              onClick={() => answer('yes')}
+                            >
+                              <IconHeart width={18} height={18} />
+                              {t.rsvp.friend.comeInstead}
+                            </button>
+                            <label className="friend-confirm">
+                              <input
+                                ref={reasonRef}
+                                type="checkbox"
+                                checked={reasonOk}
+                                onChange={(e) => {
+                                  setReasonOk(e.target.checked)
+                                  setErrors((x) => ({ ...x, reason: undefined }))
+                                }}
+                                aria-invalid={!!errors.reason}
+                              />
+                              <span>{t.rsvp.friend.confirm}</span>
+                            </label>
+                            {errors.reason && (
+                              <p className="error">
+                                <IconAlert /> {t.rsvp.errors[errors.reason]}
+                              </p>
+                            )}
+                          </>
+                        ) : (
+                          <>
+                            <p className="friend-hello">{t.rsvp.friend.hello(friend.name)}</p>
+                            <p className="friend-body">{t.rsvp.friend.body}</p>
+                            <div className="friend-sign">{t.rsvp.friend.sign}</div>
+                          </>
+                        )}
+                      </div>
+                    </m.div>
+                  )}
+                </AnimatePresence>
 
                 <AnimatePresence initial={false}>
                   {attending === 'yes' && (
@@ -332,6 +404,16 @@ export function Rsvp() {
                     {t.rsvp.message}
                     <span className="opt">({t.rsvp.optional})</span>
                   </label>
+                  <div className="quick-notes" role="group" aria-label={t.rsvp.quickTitle}>
+                    <span className="quick-title">{t.rsvp.quickTitle}</span>
+                    <div className="quick-row">
+                      {quick.map((q) => (
+                        <button key={q} type="button" className="quick-note" aria-pressed={message === q} onClick={() => setMessage(q)}>
+                          {q}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                   <textarea
                     id="rsvp-msg"
                     className="textarea"
