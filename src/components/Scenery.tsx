@@ -4,7 +4,7 @@
  * Everything is inline SVG (no image downloads) and every movement is a CSS animation
  * on transform/opacity only, switched off for reduced-motion users (see global.css).
  */
-import { memo, type CSSProperties, type SVGProps } from 'react'
+import { memo, useEffect, useState, type CSSProperties, type SVGProps } from 'react'
 
 type P = SVGProps<SVGSVGElement>
 type Pt = [number, number]
@@ -308,41 +308,118 @@ export function TitleOrnament(props: P) {
   )
 }
 
-/* ---------- falling petals and leaves (whole page) ---------- */
-const FALLERS = Array.from({ length: 16 }, (_, i) => ({
-  left: `${f(3 + r01(i + 1) * 94)}%`,
-  delay: `${f(-r01(i + 7) * 22)}s`,
-  dur: `${f(15 + r01(i + 13) * 12)}s`,
-  sway: `${f(2.6 + r01(i + 19) * 2.4)}s`,
-  drift: `${Math.round(20 + r01(i + 23) * 40)}px`,
-  size: Math.round(11 + r01(i + 29) * 9),
-  kind: i % 4 === 3 ? 'leaf' : 'petal',
-  tone: i % 3,
-}))
+/* ---------- falling petals and leaves ---------- */
+type Faller = {
+  id: number
+  x: number
+  y: number
+  fall: number
+  delay: number
+  dur: number
+  sway: number
+  drift: number
+  size: number
+  leaf: boolean
+  tone: number
+}
 
-export const FallingPetals = memo(function FallingPetals() {
+let nextId = 0
+const rand = (a: number, b: number) => a + Math.random() * (b - a)
+
+/** A welcome shower across the top of the screen: all of it starts within ~3s and is gone by ~9s. */
+function shower(): Faller[] {
+  const w = window.innerWidth
+  const h = window.innerHeight
+  const n = w < 600 ? 12 : 18
+  return Array.from({ length: n }, (_, i) => ({
+    id: nextId++,
+    x: rand(0.03, 0.97) * w,
+    y: -30,
+    fall: h + 60,
+    delay: rand(0, 3),
+    dur: rand(4.5, 6),
+    sway: rand(2.2, 3.6),
+    drift: rand(18, 45),
+    size: Math.round(rand(11, 19)),
+    leaf: i % 4 === 3,
+    tone: i % 3,
+  }))
+}
+
+/** A small handful that tumbles down from wherever the guest touched. */
+function burst(cx: number, cy: number): Faller[] {
+  const h = window.innerHeight
+  return Array.from({ length: 7 }, (_, i) => {
+    const y = cy + rand(-24, 12)
+    return {
+      id: nextId++,
+      x: cx + rand(-40, 40),
+      y,
+      fall: h - y + 40,
+      delay: rand(0, 0.35),
+      dur: rand(2.6, 3.8),
+      sway: rand(1.6, 2.6),
+      drift: rand(14, 34),
+      size: Math.round(rand(11, 17)),
+      leaf: i % 4 === 3,
+      tone: i % 3,
+    }
+  })
+}
+
+const MAX_FALLERS = 48
+
+/**
+ * Petals and leaves: one gentle shower when the invitation opens, then quiet.
+ * After that, every tap or click on the page lets a few petals fall from that spot.
+ */
+export function FallingPetals() {
+  const [items, setItems] = useState<Faller[]>([])
+
+  useEffect(() => {
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return
+    const timers = new Set<number>()
+    const add = (batch: Faller[]) => {
+      setItems((cur) => [...cur, ...batch].slice(-MAX_FALLERS))
+      const life = Math.max(...batch.map((p) => p.delay + p.dur)) * 1000 + 200
+      const ids = new Set(batch.map((p) => p.id))
+      const t = window.setTimeout(() => {
+        timers.delete(t)
+        setItems((cur) => cur.filter((p) => !ids.has(p.id)))
+      }, life)
+      timers.add(t)
+    }
+    add(shower())
+    const onDown = (e: PointerEvent) => add(burst(e.clientX, e.clientY))
+    window.addEventListener('pointerdown', onDown, { passive: true })
+    return () => {
+      window.removeEventListener('pointerdown', onDown)
+      timers.forEach((t) => window.clearTimeout(t))
+    }
+  }, [])
+
   return (
     <div className="fallers" aria-hidden="true">
-      {FALLERS.map((p, i) => (
-        <span key={i} className="faller" style={{ left: p.left, animationDelay: p.delay, animationDuration: p.dur }}>
+      {items.map((p) => (
+        <span
+          key={p.id}
+          className="faller"
+          style={{ left: p.x, top: p.y, animationDelay: `${p.delay}s`, animationDuration: `${p.dur}s`, ['--fall' as string]: `${p.fall}px` } as CSSProperties}
+        >
           <svg
             className="faller-sway"
             viewBox="-8 -16 16 18"
             width={p.size}
             height={p.size}
-            style={{ animationDuration: p.sway, ['--drift' as string]: p.drift } as CSSProperties}
+            style={{ animationDuration: `${p.sway}s`, ['--drift' as string]: `${p.drift}px` } as CSSProperties}
           >
-            {p.kind === 'leaf' ? (
-              <path d={leafD(15, 5.5)} fill={['#6f8f45', '#5c7a36', '#8aa65a'][p.tone]} />
-            ) : (
-              <path d={BRACT} fill={BLOOM[p.tone][0]} opacity="0.9" />
-            )}
+            {p.leaf ? <path d={leafD(15, 5.5)} fill={['#6f8f45', '#5c7a36', '#8aa65a'][p.tone]} /> : <path d={BRACT} fill={BLOOM[p.tone][0]} opacity="0.9" />}
           </svg>
         </span>
       ))}
     </div>
   )
-})
+}
 
 /** Soft, blurred shadow of a leafy branch drifting in the breeze (decorative backdrop). */
 export function LeafShadow({ style, className = '' }: { style?: CSSProperties; className?: string }) {

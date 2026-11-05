@@ -1,8 +1,10 @@
 import { events, TIME_ZONE, venues, type WeddingEvent } from '../content/wedding'
 import { useLang } from '../i18n/LanguageContext'
-import { EventGlyph, IconArrow, IconClock, IconPin } from './Ornaments'
+import { IconArrow, IconClock, IconPin } from './Ornaments'
 import { Reveal, SectionHead } from './Reveal'
 import { LeafShadow } from './Scenery'
+
+const ICON_BASE = `${import.meta.env.BASE_URL}icons/`
 
 const dayKey = (iso: string) => new Intl.DateTimeFormat('en-CA', { timeZone: TIME_ZONE }).format(new Date(iso))
 const dayNum = (iso: string) => new Intl.DateTimeFormat('en-IN', { timeZone: TIME_ZONE, day: 'numeric' }).format(new Date(iso))
@@ -15,7 +17,7 @@ function EventCard({ ev, index }: { ev: WeddingEvent; index: number }) {
       <article className={`event-card ${ev.highlight ? 'main' : ''}`} aria-labelledby={`ev-${ev.id}`}>
         {ev.highlight && <span className="main-badge">{t.events.main}</span>}
         <div className="event-icon">
-          <EventGlyph name={ev.icon} />
+          <img src={`${ICON_BASE}${ev.icon}.webp`} alt="" width={200} height={200} loading="lazy" decoding="async" />
         </div>
         <div>
           <h3 className="event-name" id={`ev-${ev.id}`}>
