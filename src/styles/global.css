@@ -1994,10 +1994,31 @@ html[data-lang='hi'] .cal-card h3 {
   border-radius: 999px;
   box-shadow: inset 0 0 0 1px rgba(184, 137, 62, 0.6);
 }
+/* grid items may shrink below their content, so the chip row scrolls instead of widening the card */
+.cal-grid > * {
+  min-width: 0;
+}
+/* one row of reminder choices that scrolls sideways, with a soft fade at the edge */
 .lead-chips {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  margin-inline: -4px;
+  padding: 3px 28px 3px 4px;
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 32px), transparent);
+  mask-image: linear-gradient(90deg, #000 calc(100% - 32px), transparent);
+}
+.lead-chips::-webkit-scrollbar {
+  display: none;
+}
+.lead-chips button {
+  flex: none;
+  white-space: nowrap;
+  scroll-snap-align: start;
 }
 .lead-chips button {
   appearance: none;
@@ -2017,6 +2038,31 @@ html[data-lang='hi'] .cal-card h3 {
   background: var(--maroon);
   color: var(--ivory);
   box-shadow: none;
+}
+.custom-when {
+  overflow: hidden;
+}
+.custom-fields {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 10px;
+  padding-top: 14px;
+}
+.custom-fields label span {
+  display: block;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.custom-fields .input {
+  padding: 11px 12px;
+  font-size: 16px;
+  min-height: 48px;
+}
+.custom-hint {
+  margin: 8px 0 0;
+  font-size: 13.5px;
+  color: var(--muted);
 }
 .remind-on {
   margin: 14px 0 16px;

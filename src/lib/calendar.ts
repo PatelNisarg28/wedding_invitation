@@ -7,7 +7,7 @@ import { events, SITE_URL, venues, type Lang, type WeddingEvent } from '../conte
 /** First celebration — travel reminders count back from this day. */
 export const FIRST_EVENT_START = events[0].start
 
-export const TRAVEL_LEADS = [30, 14, 7] as const
+export const TRAVEL_LEADS = [60, 30, 21, 14, 7, 3] as const
 export type TravelLead = (typeof TRAVEL_LEADS)[number]
 
 /** Duration of each celebration in the calendar (minutes). */
@@ -73,9 +73,23 @@ export function travelDate(days: TravelLead) {
 }
 
 export function travelItem(days: TravelLead, lang: Lang): CalItem {
-  const start = travelDate(days)
+  return travelItemAt(travelDate(days), lang, `${days}d`)
+}
+
+/** A guest-chosen date and time, both read as India time (IST, UTC+5:30). */
+export function customTravelDate(date: string, time: string): Date | null {
+  const [y, mo, d] = date.split('-').map(Number)
+  const [h, mi] = time.split(':').map(Number)
+  if (!y || !mo || !d || Number.isNaN(h) || Number.isNaN(mi)) return null
+  return new Date(Date.UTC(y, mo - 1, d, h, mi) - 330 * 60_000)
+}
+
+/** The first celebration's day as YYYY-MM-DD in IST (the latest sensible reminder date). */
+export const LAST_REMINDER_DAY = new Date(new Date(FIRST_EVENT_START).getTime() + 330 * 60_000).toISOString().slice(0, 10)
+
+export function travelItemAt(start: Date, lang: Lang, key = 'custom'): CalItem {
   return {
-    uid: `travel-${days}d-2027@nisarg-weds-devanshi.site`,
+    uid: `travel-${key}-2027@nisarg-weds-devanshi.site`,
     title: TXT[lang].travelTitle,
     start,
     end: new Date(start.getTime() + 30 * 60_000),
@@ -165,5 +179,7 @@ export function icsFiles(): Record<string, string> {
   }
   return files
 }
+
+export const calendarName = (lang: Lang) => TXT[lang].calName
 
 export const icsPath = (name: string, lang: Lang) => `calendar/${name}-${lang}.ics`
