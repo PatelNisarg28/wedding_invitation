@@ -32,8 +32,11 @@ function editDistance(a: string, b: string) {
   return prev[b.length]
 }
 
-/** Short names must match exactly; names of 5+ letters may be off by one letter (Kumkum ↔ Kunkum). */
-const close = (token: string, target: string) => token === target || (target.length >= 5 && editDistance(token, target) <= 1)
+/**
+ * Names under 7 letters must match exactly (otherwise Rahil would catch Rahul, Priyal would catch Priya);
+ * longer names may be off by one letter (Chaitnya, Subhajit). Known variants are listed in friends.ts.
+ */
+const close = (token: string, target: string) => token === target || (target.length >= 7 && editDistance(token, target) <= 1)
 
 /** The must-come friend whose name appears in what the guest typed, if any. */
 export function matchFriend(input: string, list: Friend[] = mustComeFriends): Friend | null {
