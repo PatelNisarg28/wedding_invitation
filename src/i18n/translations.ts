@@ -56,15 +56,13 @@ const en = {
   },
   travel: {
     title: 'Getting to Surat',
-    sub: 'The nearest airport and railway stations.',
+    sub: 'Surat’s airport and railway stations.',
     stv: 'Surat Airport',
     stvNote: 'Domestic flights · closest to the venues',
     st: 'Surat Railway Station',
     stNote: 'Main station · most trains stop here',
     udn: 'Udhna Junction',
     udnNote: 'Surat’s second station, in the south of the city',
-    big: 'Mumbai or Ahmedabad Airport',
-    bigNote: 'International flights · about 5 hours to Surat by road',
   },
   events: {
     eyebrow: 'Join us',
@@ -221,15 +219,13 @@ const hi: Dict = {
   },
   travel: {
     title: 'सूरत कैसे पहुँचें',
-    sub: 'सबसे नज़दीकी हवाई अड्डा और रेलवे स्टेशन।',
+    sub: 'सूरत का हवाई अड्डा और रेलवे स्टेशन।',
     stv: 'सूरत हवाई अड्डा',
     stvNote: 'घरेलू उड़ानें · कार्यक्रम स्थलों के सबसे पास',
     st: 'सूरत रेलवे स्टेशन',
     stNote: 'मुख्य स्टेशन · अधिकतर ट्रेनें यहाँ रुकती हैं',
     udn: 'उधना जंक्शन',
     udnNote: 'सूरत का दूसरा स्टेशन, शहर के दक्षिण में',
-    big: 'मुंबई या अहमदाबाद हवाई अड्डा',
-    bigNote: 'अंतरराष्ट्रीय उड़ानें · सड़क से सूरत लगभग 5 घंटे',
   },
   events: {
     eyebrow: 'पधारें',
