@@ -2,22 +2,33 @@ import { useLang } from '../i18n/LanguageContext'
 
 type Kind = 'plane' | 'train'
 
+/** Fine line icons, drawn to match the gold-and-maroon line art used across the site. */
 function Icon({ kind }: { kind: Kind }) {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
       {kind === 'plane' ? (
-        <path d="M10.5 21l1.5-1v-4.5l6.5 3v-2L12 11.5V5.5a1.5 1.5 0 0 0-3 0v6L2.5 16.5v2l6.5-3V20l1.5 1z" transform="rotate(45 12 12)" />
+        <>
+          {/* side-on aeroplane climbing over a short runway */}
+          <path d="M5 18.5l3.2-.4 2.6 2.4 13-5.6c1.6-.7 2.4-2.1 1.6-2.9-.7-.7-2-.6-3.2-.1l-4.4 1.9-6.6-4.6-2.2.9 4.1 5.3-4 1.7-2.6-1.4-1.6.6z" />
+          <path d="M6 25.5h20" />
+          <path d="M9 25.5h2M14 25.5h2M19 25.5h2" strokeWidth="2" />
+        </>
       ) : (
         <>
-          <rect x="5.5" y="3" width="13" height="14" rx="3" />
-          <path d="M5.5 10h13M9 13.5h.01M15 13.5h.01M8 21l2-4M16 21l-2-4" />
+          {/* front of a train on rails */}
+          <path d="M10 5.5h12a3 3 0 0 1 3 3v11a3 3 0 0 1-3 3H10a3 3 0 0 1-3-3v-11a3 3 0 0 1 3-3z" />
+          <path d="M7 14h18M13 5.5v-1.5h6v1.5" />
+          <path d="M10.5 8.5h11v3h-11z" />
+          <circle cx="11" cy="18" r="1.2" />
+          <circle cx="21" cy="18" r="1.2" />
+          <path d="M11 22.5l-2.5 4M21 22.5l2.5 4M9.5 25h13" />
         </>
       )}
     </svg>
   )
 }
 
-/** How to reach Surat: nearest airport and railway stations, with codes. */
+/** How to reach Surat: its airport and railway stations, with codes. */
 export function TravelOptions() {
   const { t } = useLang()
   const o = t.travel
@@ -25,7 +36,6 @@ export function TravelOptions() {
     { kind: 'plane', code: 'STV', name: o.stv, note: o.stvNote },
     { kind: 'train', code: 'ST', name: o.st, note: o.stNote },
     { kind: 'train', code: 'UDN', name: o.udn, note: o.udnNote },
-    { kind: 'plane', code: 'BOM · AMD', name: o.big, note: o.bigNote },
   ]
   return (
     <div className="cal-card travel-options">
