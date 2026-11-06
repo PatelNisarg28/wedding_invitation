@@ -5,6 +5,7 @@ import { matchFriend } from '../lib/friends'
 import { IconAlert, IconHeart, IconLeaf } from './Ornaments'
 import { SectionHead } from './Reveal'
 import { LeafShadow } from './Scenery'
+import { TravelOptions } from './TravelOptions'
 import { TravelReminder } from './TravelReminder'
 
 type Attending = 'yes' | 'no'
@@ -509,6 +510,7 @@ export function Rsvp() {
               transition={{ duration: 0.5, ease: EASE }}
             >
               <TravelReminder />
+              <TravelOptions />
             </m.div>
           )}
         </AnimatePresence>
