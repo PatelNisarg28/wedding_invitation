@@ -19,6 +19,8 @@ const TXT = {
     suffix: "Nisarg & Devanshi's Wedding",
     details: (ev: string, venueUrl: string) =>
       `${ev}\n\nDirections: ${venueUrl}\nInvitation & RSVP: ${SITE_URL}`,
+    rsvpTitle: "RSVP for Nisarg & Devanshi's wedding",
+    rsvpDetails: `A gentle reminder to let Nisarg & Devanshi know if you can join them on 25–26 January 2027 in Surat.\n\nRSVP here (it takes a minute): ${SITE_URL}/#rsvp`,
     travelTitle: "Book travel for Nisarg & Devanshi's wedding",
     travelDetails:
       `Celebrations: 25–26 January 2027 in Surat, Gujarat.\nWedding ceremony (Hast Melap): Tuesday, 26 January 2027, 7:30 PM, Somiba Party Plot, Bhimrad Canal Road.\n\nBook your tickets and stay, and RSVP if you haven't yet: ${SITE_URL}/#rsvp`,
@@ -27,6 +29,8 @@ const TXT = {
     calName: 'निसर्ग और देवांशी · विवाह',
     suffix: 'निसर्ग और देवांशी का विवाह',
     details: (ev: string, venueUrl: string) => `${ev}\n\nरास्ता: ${venueUrl}\nनिमंत्रण एवं उपस्थिति: ${SITE_URL}`,
+    rsvpTitle: 'निसर्ग और देवांशी के विवाह के लिए उपस्थिति बताएं',
+    rsvpDetails: `याद दिलाने के लिए: निसर्ग और देवांशी को बताएं कि क्या आप 25–26 जनवरी 2027 को सूरत में पधार सकेंगे।\n\nयहाँ उत्तर दें (बस एक मिनट): ${SITE_URL}/#rsvp`,
     travelTitle: 'निसर्ग और देवांशी के विवाह के लिए यात्रा बुक करें',
     travelDetails:
       `उत्सव: 25–26 जनवरी 2027, सूरत, गुजरात।\nविवाह संस्कार (हस्त मिलाप): मंगलवार, 26 जनवरी 2027, शाम 7:30 बजे, सोमीबा पार्टी प्लॉट, भीमराड कैनाल रोड।\n\nअपने टिकट और ठहरने की व्यवस्था करें, और यदि अभी तक नहीं किया है तो उपस्थिति बताएं: ${SITE_URL}/#rsvp`,
@@ -86,6 +90,23 @@ export function customTravelDate(date: string, time: string): Date | null {
 
 /** The first celebration's day as YYYY-MM-DD in IST (the latest sensible reminder date). */
 export const LAST_REMINDER_DAY = new Date(new Date(FIRST_EVENT_START).getTime() + 330 * 60_000).toISOString().slice(0, 10)
+
+/** Reminder to send the RSVP, `days` from now at 10:00 AM India time. */
+export function rsvpReminderDate(days: number, now = Date.now()) {
+  const ist = new Date(now + 330 * 60_000 + days * 86_400_000)
+  return new Date(Date.UTC(ist.getUTCFullYear(), ist.getUTCMonth(), ist.getUTCDate(), 4, 30))
+}
+
+export function rsvpReminderItem(start: Date, lang: Lang): CalItem {
+  return {
+    uid: `rsvp-${start.getTime()}@nisarg-weds-devanshi.site`,
+    title: TXT[lang].rsvpTitle,
+    start,
+    end: new Date(start.getTime() + 15 * 60_000),
+    details: TXT[lang].rsvpDetails,
+    alarms: [0],
+  }
+}
 
 export function travelItemAt(start: Date, lang: Lang, key = 'custom'): CalItem {
   return {
