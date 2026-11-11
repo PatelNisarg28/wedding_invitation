@@ -1,6 +1,7 @@
 import { AnimatePresence, LazyMotion, MotionConfig, domAnimation } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { Closing } from './components/Closing'
+import { ExitPrompt } from './components/ExitPrompt'
 import { Countdown } from './components/Countdown'
 import { Events } from './components/Events'
 import { Hero } from './components/Hero'
@@ -68,6 +69,7 @@ export default function App() {
           <div className="border-band" aria-hidden="true" />
           <footer className="site-footer">{t.footer.made}</footer>
         </div>
+        <ExitPrompt armed={opened} />
       </MotionConfig>
     </LazyMotion>
   )

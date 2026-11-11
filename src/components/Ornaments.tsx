@@ -164,6 +164,9 @@ export const IconNavigate = (p: P) => (
 export const IconPhone = (p: P) => (
   <svg viewBox="0 0 24 24" aria-hidden="true" {...p}><g {...ui}><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2" /></g></svg>
 )
+export const IconClose = (p: P) => (
+  <svg viewBox="0 0 24 24" aria-hidden="true" {...p}><g {...ui}><path d="M6 6l12 12M18 6 6 18" /></g></svg>
+)
 export const IconHeart = (p: P) => (
   <svg viewBox="0 0 24 24" aria-hidden="true" {...p}><g {...ui}><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" /></g></svg>
 )

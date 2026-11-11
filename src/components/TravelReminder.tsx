@@ -15,8 +15,8 @@ import {
   type TravelLead,
 } from '../lib/calendar'
 
-type Platform = 'ios' | 'android' | 'other'
-function detectPlatform(): Platform {
+export type Platform = 'ios' | 'android' | 'other'
+export function detectPlatform(): Platform {
   if (typeof navigator === 'undefined') return 'other'
   const ua = navigator.userAgent
   if (/iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1)) return 'ios'
@@ -36,7 +36,7 @@ function CalIcon({ kind }: { kind: 'apple' | 'google' }) {
   )
 }
 
-function CalButtons({ ics, google, platform, download }: { ics: string; google: string; platform: Platform; download?: string }) {
+export function CalButtons({ ics, google, platform, download }: { ics: string; google: string; platform: Platform; download?: string }) {
   const { t } = useLang()
   const apple = (
     <a key="a" className={`btn cal-btn ${platform === 'ios' ? '' : 'ghost'}`} href={ics} type="text/calendar" download={download}>

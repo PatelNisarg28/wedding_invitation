@@ -165,6 +165,7 @@ export function Rsvp() {
       const s: Saved = { name: name.trim(), attending: attending!, guests: attending === 'yes' ? guests : 0, needsStay: attending === 'yes' && needsStay }
       try {
         if (!IS_PREVIEW) storage()?.setItem(SAVED_KEY, JSON.stringify(s))
+        window.dispatchEvent(new Event('nwd:rsvp-sent'))
       } catch {
         /* ignore */
       }
