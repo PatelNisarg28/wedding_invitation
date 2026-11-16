@@ -63,6 +63,8 @@ const en = {
     close: 'Close',
     remindTitle: 'When should we remind you?',
     when: { 1: 'Tomorrow', 3: 'In 3 days', 7: 'In a week' } as Record<number, string>,
+    custom: 'Custom',
+    pickFuture: 'Please pick a date and time that’s still ahead.',
     remindOn: (d: string, time: string) => `Your calendar will remind you on ${d}, ${time}.`,
   },
   travel: {
@@ -237,6 +239,8 @@ const hi: Dict = {
     close: 'बंद करें',
     remindTitle: 'कब याद दिलाएं?',
     when: { 1: 'कल', 3: '3 दिन बाद', 7: 'एक सप्ताह बाद' } as Record<number, string>,
+    custom: 'अपनी तारीख़',
+    pickFuture: 'कृपया आने वाली कोई तारीख़ और समय चुनें।',
     remindOn: (d: string, time: string) => `आपका कैलेंडर आपको ${d}, ${time} याद दिलाएगा।`,
   },
   travel: {

@@ -2787,10 +2787,16 @@ html[data-lang='hi'] .exit-title {
   font-weight: 500;
   color: var(--charcoal);
 }
+.exit-remind .custom-fields {
+  padding-top: 12px;
+}
 .exit-remind .remind-on {
   margin: 12px 0;
 }
+/* four short choices: let them wrap so none is hidden off the edge */
 .exit-chips {
+  flex-wrap: wrap;
+  overflow: visible;
   -webkit-mask-image: none;
   mask-image: none;
   padding-right: 4px;
