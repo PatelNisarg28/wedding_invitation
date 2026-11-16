@@ -52,3 +52,13 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
 
   return json({ ok: true, summary, rows })
 }
+
+/** Remove one response (e.g. a test or false entry): DELETE /api/admin/rsvps?id=12 */
+export const onRequestDelete: PagesFunction<Env> = async ({ request, env }) => {
+  if (!(await isAdmin(request, env))) return json({ ok: false, error: 'unauthorized' }, 401, { 'WWW-Authenticate': 'Bearer' })
+  const id = Number(new URL(request.url).searchParams.get('id'))
+  if (!Number.isInteger(id) || id < 1) return json({ ok: false, error: 'bad_id' }, 400)
+  const res = await env.DB.prepare('DELETE FROM rsvps WHERE id = ?').bind(id).run()
+  if (!res.meta.changes) return json({ ok: false, error: 'not_found' }, 404)
+  return json({ ok: true, deleted: id })
+}

@@ -79,24 +79,39 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
     await ensureStayColumn(env.DB)
 
-    // Upsert keyed by device: repeat taps / resubmits update the same response instead of duplicating it
-    await env.DB.prepare(
-      `INSERT INTO rsvps (device_id, name, attending, guests, message, lang, ip_hash, user_agent, revision, created_at, updated_at, needs_stay)
-       VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, 1, ?9, ?9, ?10)
-       ON CONFLICT(device_id) DO UPDATE SET
-         name = excluded.name,
-         attending = excluded.attending,
-         guests = excluded.guests,
-         needs_stay = excluded.needs_stay,
-         message = CASE WHEN excluded.message <> '' THEN excluded.message ELSE rsvps.message END,
-         lang = excluded.lang,
-         ip_hash = excluded.ip_hash,
-         user_agent = excluded.user_agent,
-         revision = rsvps.revision + 1,
-         updated_at = excluded.updated_at`,
-    )
-      .bind(deviceId, name, attending, guests, message, lang, ipHash, ua, now, needsStay)
-      .run()
+    /*
+     * One response per guest name. The name is matched ignoring capitals and spacing
+     * ("amit patel" = "Amit  Patel"), so a second reply from the same name updates that
+     * guest's latest response instead of adding a new row. A different name is a new guest,
+     * even from the same phone (e.g. two family members replying on one device).
+     */
+    const byName = await env.DB.prepare('SELECT id FROM rsvps WHERE lower(name) = lower(?1) ORDER BY updated_at DESC LIMIT 1')
+      .bind(name)
+      .first<{ id: number }>()
+
+    if (byName) {
+      await env.DB.prepare(
+        // the first spelling of the name is kept; everything else takes the latest answer
+        `UPDATE rsvps SET
+           attending = ?3, guests = ?4, needs_stay = ?5,
+           message = CASE WHEN ?6 <> '' THEN ?6 ELSE message END,
+           lang = ?7, ip_hash = ?8, user_agent = ?9,
+           revision = revision + 1, updated_at = ?10
+         WHERE id = ?1`,
+      )
+        .bind(byName.id, name, attending, guests, needsStay, message, lang, ipHash, ua, now)
+        .run()
+    } else {
+      // device_id must stay unique: a second guest from the same phone gets its own key
+      const taken = await env.DB.prepare('SELECT 1 FROM rsvps WHERE device_id = ?').bind(deviceId).first()
+      const rowDevice = taken ? `${deviceId}-${crypto.randomUUID().slice(0, 8)}` : deviceId
+      await env.DB.prepare(
+        `INSERT INTO rsvps (device_id, name, attending, guests, message, lang, ip_hash, user_agent, revision, created_at, updated_at, needs_stay)
+         VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, 1, ?9, ?9, ?10)`,
+      )
+        .bind(rowDevice, name, attending, guests, message, lang, ipHash, ua, now, needsStay)
+        .run()
+    }
 
     return json({ ok: true, response: { name, attending: attending === 1 ? 'yes' : 'no', guests, needsStay: needsStay === 1 } })
   } catch (err) {
