@@ -73,6 +73,14 @@ function Admin() {
     URL.revokeObjectURL(a.href)
   }
 
+  const remove = async (r: Row) => {
+    if (!window.confirm(`Delete the response from "${r.name}"?\n\nThis cannot be undone.`)) return
+    setError('')
+    const res = await fetch(`/api/admin/rsvps?id=${r.id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } })
+    if (!res.ok && res.status !== 404) return setError('Could not delete that response. Please try again.')
+    await load(token)
+  }
+
   const rows = useMemo(() => {
     const list = data?.rows ?? []
     return list.filter(
@@ -159,6 +167,7 @@ function Admin() {
                   <th>Message</th>
                   <th>Lang</th>
                   <th>Updated (IST)</th>
+                  <th aria-label="Actions" />
                 </tr>
               </thead>
               <tbody>
@@ -176,11 +185,16 @@ function Admin() {
                       {fmt(r.updated_at)}
                       {r.revision > 1 && <small> · edited</small>}
                     </td>
+                    <td>
+                      <button type="button" className="del" onClick={() => remove(r)} aria-label={`Delete ${r.name}`}>
+                        Delete
+                      </button>
+                    </td>
                   </tr>
                 ))}
                 {rows.length === 0 && (
                   <tr>
-                    <td colSpan={7} className="empty">
+                    <td colSpan={8} className="empty">
                       No responses yet.
                     </td>
                   </tr>
